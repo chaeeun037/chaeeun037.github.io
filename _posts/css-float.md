@@ -1,0 +1,12 @@
+# CSS FLOAT
+
+float로 left, right를 통해 부유속성을 지정하게 되면 display는 무시된다.(none은 제외)
+
+이후 요소에 clear 속성이 있으면 height 차이나는 요소의 height를 float 한 쪽으로 맞출 수 있다.
+
+텍스트 및 인라인 요소가 그 주위를 감싸는 배치가 된다.
+
+https://developer.mozilla.org/ko/docs/Web/CSS/float
+
+https://www.w3schools.com/cssref/pr_class_float.asp
+
