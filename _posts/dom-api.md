@@ -1,0 +1,57 @@
+# DOM API
+
+자바스크립트로 html을 제어할 때 사용하는 api이다. DOM의 최상위 객체는 document이다.
+
+
+
+## document.querySelector()
+
+선택자와 일치하는 html의 첫번째 element를 반환한다.
+
+```javascript
+document.querySelector(selectors);
+```
+
+[예시]
+
+```javascript
+const boxEl = document.querySelector('.box');
+// HTML 요소(Element) 1개 검색/찾기
+```
+
+
+
+## document.querySelectorAll()
+
+선택자와 일치하는 html 요소를 nodeList로 반환한다.
+
+```js
+elementList = parentNode.querySelectorAll(selectors);
+```
+
+
+
+## element.classList()
+
+html 요소에 class를 추가, 삭제할 수 있다.
+
+[예시]
+
+```javascript
+const boxEl = document.querySelector(.box);
+
+// 요소의 클래스 정보 객체 활용!
+boxEl.classList.add('active');
+let isContains = boxEl.classList.contains('active');
+console.log(isContains); // true
+
+boxEl.classList.remove('active');
+isContains = boxEl.classList.contains('active');
+console.log(isContains); // false
+```
+
+
+
+classList.contains(): 값이 존재하는지 체크한다.
+
+classList.toggle(): 클래스값이 있는지 체크하고 없으면 더하고 있으면 제거한다.

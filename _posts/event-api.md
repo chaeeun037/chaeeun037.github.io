@@ -1,0 +1,34 @@
+# EVENT API
+
+Event 인터페이스는 DOM 내에 위치한 이벤트를 나타낸다. 
+
+이벤트는 마우스를 클릭하거나 키보드를 누르는 등 사용자 액션에 의해 발생할 수도 있고, 비동기적 작업의 진행을 나타내기 위해 API가 생성할 수도 있다.
+
+
+
+## eventTarget.addEventListener()
+
+```js
+target.addEventListener(type, listener[, options]);
+target.addEventListener(type, listener[, useCapture]);
+target.addEventListener(type, listener[, useCapture, wantsUntrusted ]); // Gecko/Mozilla only
+```
+
+[예시]
+
+```javascript
+// Function to change the content of t2
+function modifyText() {
+  var t2 = document.getElementById("t2");
+  if (t2.firstChild.nodeValue == "three") {
+    t2.firstChild.nodeValue = "two";
+  } else {
+    t2.firstChild.nodeValue = "three";
+  }
+}
+
+// add event listener to table
+var el = document.getElementById("outside");
+el.addEventListener("click", modifyText, false);
+```
+
