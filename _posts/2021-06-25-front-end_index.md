@@ -8,6 +8,12 @@ last_modified_at: 2021-01-26T08:06:00-05:00
 
 # FRONT END 
 
+###### BROWSER
+
+* 브라우저 렌더링
+* async & defer
+* repaint & reflow
+
 
 
 ###### HTML
