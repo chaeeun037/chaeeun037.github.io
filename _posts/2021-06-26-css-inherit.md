@@ -1,5 +1,4 @@
 ---
-title:  "css-inherit"
 search: true
 categories: 
   - frontend

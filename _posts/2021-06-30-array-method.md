@@ -1,5 +1,4 @@
 ---
-title:  "array-method"
 search: true
 categories: 
   - frontend

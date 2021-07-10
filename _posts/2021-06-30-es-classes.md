@@ -1,5 +1,4 @@
 ---
-title:  "es-classes"
 search: true
 categories: 
   - frontend

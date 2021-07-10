@@ -1,5 +1,4 @@
 ---
-title:  "object-literal"
 search: true
 categories: 
   - frontend

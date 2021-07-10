@@ -1,5 +1,4 @@
 ---
-title:  "learn-list"
 search: true
 categories: 
   - frontend

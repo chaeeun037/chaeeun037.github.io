@@ -1,5 +1,4 @@
 ---
-title:  "semantic-tag"
 search: true
 categories: 
   - frontend

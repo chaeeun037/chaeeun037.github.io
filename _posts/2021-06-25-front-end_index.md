@@ -1,5 +1,4 @@
 ---
-title:  "front-end_index"
 search: true
 categories: 
   - frontend

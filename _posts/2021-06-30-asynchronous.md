@@ -1,5 +1,4 @@
 ---
-title:  "asynchronous"
 search: true
 categories: 
   - frontend

@@ -1,5 +1,4 @@
 ---
-title:  "css-cascading"
 search: true
 categories: 
   - frontend

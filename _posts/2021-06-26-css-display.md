@@ -1,5 +1,4 @@
 ---
-title:  "css-display"
 search: true
 categories: 
   - frontend

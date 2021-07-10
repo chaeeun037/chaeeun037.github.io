@@ -1,5 +1,4 @@
 ---
-title:  "css-box-model"
 search: true
 categories: 
   - frontend
