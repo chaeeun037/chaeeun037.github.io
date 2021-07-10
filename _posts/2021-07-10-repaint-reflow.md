@@ -21,9 +21,9 @@ reflow는 문서 내의 요소들의 layout, position을 다시 계산해서 뿌
 
 
 
-## Repain
+## Repaint(redraw)
 
-리페인트는 스타일 변경이 일어났을 때 DOM 요소를 다시 그리거나, 리플로우 과정이 끝난 후에 재생성된 renter tree를 다시 그리는 과정이다. 
+repaint는 스타일 변경이 일어났을 때 DOM 요소를 다시 그리거나, reflow 과정이 끝난 후에 재생성된 renter tree를 다시 그리는 과정이다. 
 
 
 
