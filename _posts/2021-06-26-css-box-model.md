@@ -1,3 +1,11 @@
+---
+title:  "css-box-model"
+search: true
+categories: 
+  - frontend
+last_modified_at: 2021-01-26T08:06:00-05:00
+---
+
 # CSS BOX MODEL
 
 content, padding, border, margin

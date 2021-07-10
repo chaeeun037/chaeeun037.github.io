@@ -1,3 +1,11 @@
+---
+title:  "css-cascading"
+search: true
+categories: 
+  - frontend
+last_modified_at: 2021-01-26T08:06:00-05:00
+---
+
 # CSS CASCADING
 
 우선순위 규칙이 있는 스타일 시트

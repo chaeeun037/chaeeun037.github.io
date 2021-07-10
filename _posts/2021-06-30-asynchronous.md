@@ -1,3 +1,11 @@
+---
+title:  "asynchronous"
+search: true
+categories: 
+  - frontend
+last_modified_at: 2021-01-26T08:06:00-05:00
+---
+
 # ASYNCHRONOUS
 
 자바스크립트의 비동기는 특정 코드의 연산이 끝날 때까지 코드의 실행을 멈추지 않고 다음 코드를 먼저 실행하는 자바스크립트의 특성을 말한다.

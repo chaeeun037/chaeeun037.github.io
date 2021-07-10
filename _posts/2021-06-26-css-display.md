@@ -1,3 +1,11 @@
+---
+title:  "css-display"
+search: true
+categories: 
+  - frontend
+last_modified_at: 2021-01-26T08:06:00-05:00
+---
+
 # CSS DISPLAY
 
 요소를 어떻게 보여줄지 결정한다. 태그마다 기본 값이 다르다.

@@ -1,3 +1,11 @@
+---
+title:  "object-literal"
+search: true
+categories: 
+  - frontend
+last_modified_at: 2021-01-26T08:06:00-05:00
+---
+
 # OBJECT LITERAL
 
 객체를 생성하는 방법 중 하나이다. 이 외에는 생성자로 객체를 생성하는 방법이 있다.

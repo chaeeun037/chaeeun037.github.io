@@ -1,3 +1,11 @@
+---
+title:  "es-classes"
+search: true
+categories: 
+  - frontend
+last_modified_at: 2021-01-26T08:06:00-05:00
+---
+
 # ES Classes
 
 class는 ES6에서 클래스를 정의하는 한 방법이다.  class도 객체이다.
