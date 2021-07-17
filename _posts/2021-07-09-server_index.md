@@ -4,8 +4,6 @@
 
 * HTTP
 * DNS 
-* IDC
-
 * 로드밸런서
 
 
@@ -25,7 +23,6 @@
 * Node.js
 * Express
 * logrotate
-
-* WAS
-
+* Web Server & Web Application Server
 * NPX, NPM
+* CI/CD
