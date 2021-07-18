@@ -8,6 +8,10 @@
 
 
 
+![](https://i.stack.imgur.com/OovG7.png)
+
+
+
 ## <head>에 작성하는 경우
 
 > async, defer은 script 태그에 쓰이는 속성으로 script의 실행 시점을 지정해줌으로써 브라우저 렌더링 시간을 줄이거나 오류를 줄일 수 있다.
@@ -51,10 +55,6 @@ script 다운로드가 HTML parsing과 병렬적으로 진행되기 때문에 �
 #### 단점
 
 사용자가 그래픽 관련 컴포넌트들이 준비되지 않은 상태에서 화면을 보게 될 수 있다. 따라서 기능 사용 불가 처리를 해줘야 한다. 
-
-
-
-![script 태그의 async와 defer 속성 | 김로그](https://kimlog.me/static/7b56046cd820d53017f5fa7124ba2255/44a54/script_load.png)
 
 
 
