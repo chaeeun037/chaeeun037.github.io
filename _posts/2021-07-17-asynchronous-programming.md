@@ -16,7 +16,25 @@ DB나 file에 접근하거나 네트워크 통신을 하는 등의 경우에 비
 
 ### Web APIs
 
+### Render
+
+> request animation frame
+>
+> render tree
+>
+> layout
+>
+> Paint
+
+### micro task queue
+
+> promise then: then이 끝날 때 까지 모아놨다가 한번에 callback queue로 이동
+
+> mutation observer: 돔 변경 감시
+
 ### callback queue
+
+> 
 
 ### event loop
 
