@@ -55,7 +55,8 @@ document.getElementById("menu").addEventListener("click", function(e) {
 
 ## 장점
 
-* 동적 요소에 대한 이벤트 처리가 수월하다
+* 동적 요소에 대한 이벤트 처리가 수월하다.
+* 코드가 간결해진다.
 * 이벤트 리스너 관리가 수월하다.
 * 메모리 사용량이 줄어든다.
 * 메모리 누수 가능성이 줄어든다.
