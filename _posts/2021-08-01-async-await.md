@@ -20,8 +20,6 @@ promise를 간편하게 사용할 수 있도록 만든 것이다.
       console.log(lists.reduce((p,n)=> p + `<p>${n}</p>`,``));
     });
 })();
-
-코드복사
 ```
 
 ### async/await
@@ -33,7 +31,6 @@ promise를 간편하게 사용할 수 있도록 만든 것이다.
     const result = lists.reduce((p,n)=> p + `<p>${n}</p>`,``);
     console.log(result);
 })();
-코드복사
 ```
 
 ### 비교
