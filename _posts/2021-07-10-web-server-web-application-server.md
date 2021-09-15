@@ -1,3 +1,10 @@
+---
+search: true
+comments: true
+categories: [Web]
+---
+
+
 # WEB SERVER & WEB APPLICAION SERVER
 
 ## 정적 웹 페이지

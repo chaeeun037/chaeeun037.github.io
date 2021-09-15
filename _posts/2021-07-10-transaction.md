@@ -1,3 +1,9 @@
+---
+search: true
+comments: true
+categories: [Database]
+---
+
 # TRANSACTION
 
 > 데이터베이스의 상태를 변화시키기 위해 수행하는 작업 단위이다. 에러가 발생했을 때 트랜잭션에 포함된 모든 과정을 되돌릴 수 있어서 작업의 완전성을 보장해준다. 

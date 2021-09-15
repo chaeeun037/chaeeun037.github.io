@@ -1,3 +1,9 @@
+---
+search: true
+comments: true
+categories: [Frontend]
+---
+
 # OBSERVER PATTERN
 
 > 어떤 객체의 상태가 변할 때 그와 연관된 객체들에게 알림을 보내는 웹 프론트엔드 개발에서 자주 사용되는 디자인 패턴이다.

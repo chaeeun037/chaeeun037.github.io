@@ -1,3 +1,9 @@
+---
+search: true
+comments: true
+categories: [DevOps]
+---
+
 # TYPESCRIPT EC2 DEPLOYMENT
 
 > typescript 배포 삽질기

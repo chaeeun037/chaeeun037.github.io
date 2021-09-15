@@ -1,3 +1,9 @@
+---
+search: true
+comments: true
+categories: [Web]
+---
+
 # WEB POLLING & WEB PUSH
 
 > 클라이언트에서 서버로부터 실시간 데이터를 가져오기 위해서 사용한다.

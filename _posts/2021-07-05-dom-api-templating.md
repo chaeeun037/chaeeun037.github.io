@@ -1,3 +1,9 @@
+---
+search: true
+comments: true
+categories: [Frontend Javascript]
+---
+
 # DOM API & TEMPLATING
 
 ## Why?

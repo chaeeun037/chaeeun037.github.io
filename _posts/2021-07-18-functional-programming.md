@@ -1,3 +1,9 @@
+---
+search: true
+comments: true
+categories: [Javascript]
+---
+
 # FUNCTIONAL PROGRAMMING
 
 > 부수 효과를 없애고 함수끼리의 조합성을 강조하는 프로그래밍 패러다임이다.

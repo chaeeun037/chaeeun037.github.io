@@ -1,3 +1,9 @@
+---
+search: true
+comments: true
+categories: [Frontend]
+---
+
 # FRONTEND TEST
 
 [참고 영상](https://www.youtube.com/watch?v=pkYUcKWOqPs&list=PLgXGHBqgT2TvpJ_p9L_yZKPifgdBOzdVH&index=12)

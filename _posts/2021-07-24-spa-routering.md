@@ -1,3 +1,9 @@
+---
+search: true
+comments: true
+categories: [Frontend]
+---
+
 # SPA ROUTING
 
 > Single page application에서 CSR을 위해서 routing을 사용한다.

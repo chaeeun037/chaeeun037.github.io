@@ -1,3 +1,9 @@
+---
+search: true
+comments: true
+categories: [Backend]
+---
+
 # SCALE UP & SCALE OUT
 
 > 증가한 트래픽에 대처하는 방법이다.

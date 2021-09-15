@@ -1,3 +1,10 @@
+---
+search: true
+comments: true
+categories: [Javascript Web]
+---
+
+
 # ASYNCHRONOUS PROGRAMMING
 
 ### Why?

@@ -1,3 +1,9 @@
+---
+search: true
+comments: true
+categories: [Web]
+---
+
 # HTTP SESSION
 
 ### Why?

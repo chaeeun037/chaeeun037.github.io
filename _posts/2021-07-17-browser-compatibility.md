@@ -1,3 +1,10 @@
+---
+search: true
+comments: true
+categories: [Frontend]
+---
+
+
 # BROWSER COMPATIBILITY
 
 > 내가 작성한 코드가 모든 브라우저에서 동작할 거라는 기대는 하지 말아야 한다.

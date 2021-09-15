@@ -1,3 +1,9 @@
+---
+search: true
+comments: true
+categories: [Javascript ModernJavascriptDeepDive]
+---
+
 # Ch42: ASYNCHRONOUS PROGRAMMING
 
 > modern javascript deep dive

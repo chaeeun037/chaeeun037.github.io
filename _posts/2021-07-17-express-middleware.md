@@ -1,3 +1,10 @@
+---
+search: true
+comments: true
+categories: [Backend]
+---
+
+
 # EXPRESS MIDDLEWARE
 
 > middleware는 요청과 응답 사이에서 실행되는 함수들의 목록이며 순차적으로 실행된다.

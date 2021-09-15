@@ -1,3 +1,9 @@
+---
+search: true
+comments: true
+categories: [Architecture]
+---
+
 # CLEAN CODE
 
 ### Why?

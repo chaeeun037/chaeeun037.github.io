@@ -1,3 +1,9 @@
+---
+search: true
+comments: true
+categories: [Javascript ModernJavascriptDeepDive]
+---
+
 # MODERN JAVASCRIPT DEEP DIVE INDEX
 
 > 자바스크립트의 기본 개념과 동작 원리

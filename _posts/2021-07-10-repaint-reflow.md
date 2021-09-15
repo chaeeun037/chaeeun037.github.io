@@ -1,3 +1,9 @@
+---
+search: true
+comments: true
+categories: [Frontend]
+---
+
 # REPAINT & REFLOW
 
 > 브라우저가 렌더링 된 후에 HTML, CSS가 업데이트 되면 repain와 reflow가 발생한다.

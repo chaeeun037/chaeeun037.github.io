@@ -1,3 +1,9 @@
+---
+search: true
+comments: true
+categories: [Backend]
+---
+
 # JAVASCRIPT DATA JOIN
 
 > sql join문 없이 javascript 로직만으로 join해본 삽질기를 소개하는 글이다.

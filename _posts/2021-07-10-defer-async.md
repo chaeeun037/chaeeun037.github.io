@@ -1,3 +1,9 @@
+---
+search: true
+comments: true
+categories: [Frontend]
+---
+
 # ASYNC & DEFER
 
 > async와 defer은 script 다운로드 시 페이지 렌더링을 막지 않는다. script를 HTML에 포함하는 방법은 다음과 같다.

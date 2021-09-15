@@ -1,3 +1,9 @@
+---
+search: true
+comments: true
+categories: [Backend]
+---
+
 # LOGROTATE
 
 > 로그를 저장하고 관리하는 도구다. 

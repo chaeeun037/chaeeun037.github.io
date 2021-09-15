@@ -1,3 +1,9 @@
+---
+search: true
+comments: true
+categories: [Frontend]
+---
+
 # REACT STATE MANAGEMENT
 
 ### Why?

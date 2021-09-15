@@ -1,3 +1,10 @@
+---
+search: true
+comments: true
+categories: [Frontend]
+---
+
+
 # BROWSER RENDERING
 
 > 브라우저 렌더링 관점에서 https://example.com 접속 후 화면에 보이기까지의 과정을 표현해보자.

@@ -1,3 +1,10 @@
+---
+search: true
+comments: true
+categories: [Frontend]
+---
+
+
 # HTML, CSS, JS 실습 참고 영상
 
 # 실습영상

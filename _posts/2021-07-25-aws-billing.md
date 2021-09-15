@@ -1,3 +1,9 @@
+---
+search: true
+comments: true
+categories: [Aws]
+---
+
 # AWS BILLING
 
 > 말로만 듣던 요금 청구가 나에게 일어나다니?

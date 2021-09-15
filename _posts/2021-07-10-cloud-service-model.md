@@ -1,3 +1,9 @@
+---
+search: true
+comments: true
+categories: [DevOps]
+---
+
 # CLOUD SERVICE MODEL
 
 ![Cloud-service-models – (사)정보화사회실천연합](https://www.cisp.or.kr/wp-content/uploads/2018/04/Cloud-service-models.png)

@@ -1,3 +1,9 @@
+---
+search: true
+comments: true
+categories: [Database]
+---
+
 # ELASTIC SEARCH
 
 > 검색에 최적화된 데이터베이스로, 관계형 데이터베이스보다 빠르다.

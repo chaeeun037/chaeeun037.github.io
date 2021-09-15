@@ -1,3 +1,9 @@
+---
+search: true
+comments: true
+categories: [Frontend]
+---
+
 # EVENT DELEGATION
 
 >이벤트 리스너를 하위 요소에 추가하지 않고 상위 요소에 추가하는 기법이다.

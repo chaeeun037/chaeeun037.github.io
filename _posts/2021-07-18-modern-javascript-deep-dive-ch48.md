@@ -1,3 +1,9 @@
+---
+search: true
+comments: true
+categories: [Javascript ModernJavascriptDeepDive]
+---
+
 # Ch48: MODULE
 
 > modern javascript deep dive

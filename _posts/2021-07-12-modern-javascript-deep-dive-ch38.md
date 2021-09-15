@@ -1,3 +1,9 @@
+---
+search: true
+comments: true
+categories: [Javascript ModernJavascriptDeepDive]
+---
+
 # ch38: BROWSER RENDERING
 
 > modern javascript deep dive

@@ -1,3 +1,10 @@
+---
+search: true
+comments: true
+categories: [Architecture]
+---
+
+
 # OBJECT ORIENTED PROGRAMMING
 
 > 실세계에 있는 객체를 추상화를 통해 프로그래밍에 접목하려는 패러다임이다.

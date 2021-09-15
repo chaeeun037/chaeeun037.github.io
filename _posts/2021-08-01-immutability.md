@@ -1,3 +1,9 @@
+---
+search: true
+comments: true
+categories: [Javascript]
+---
+
 # IMMUTABILITY
 
 > 불변 데이터란 생성 후 그 상태를 바꿀 수 없는 데이터를 말한다.

@@ -1,3 +1,9 @@
+---
+search: true
+comments: true
+categories: [Database]
+---
+
 # QUERY PERFORMANCE IMPROVEMENT
 
 ### Why?
