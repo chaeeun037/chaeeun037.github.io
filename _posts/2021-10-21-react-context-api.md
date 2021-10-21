@@ -14,6 +14,8 @@ ex) 유저 정보, 테마, 언어 등 전달할 때
 
 실제로 React 다국어 프레임워크 react-i18next에서 context를 사용한다.
 
+<img src="https://i.imgur.com/iyNKCIz.png" width="400px"/>
+
 
 
 ## 고려할 것
@@ -22,7 +24,7 @@ ex) 유저 정보, 테마, 언어 등 전달할 때
 
 이런 경우에는 여러 레벨에 걸쳐 props를 넘기는것 보다 컴포넌트 합성(children prop 사용하여 엘리먼트를 출력 그대로 전달)이 더 간단할 수 있다.
 
-[예제] props 전달
+**[예제] props 전달**
 
 ```react
 <Page user={user} avatarSize={avatarSize} />
@@ -36,7 +38,7 @@ ex) 유저 정보, 테마, 언어 등 전달할 때
 </Link>
 ```
 
-[예제] 컴포넌트 합성
+**[예제] 컴포넌트 합성**
 
 ```react
 function Page(props) {
@@ -67,13 +69,37 @@ function Page(props) {
 
 ## API
 
+> [예제 코드 출처](https://velopert.com/3606)
+
 ### React.createContent
 
 Context 객체를 만든다.
 
 ### Context.Provider
 
-context를 구독하는 컴포넌트에게 context의 변화를 알리는 역할을 한다.
+context를 구독하는 컴포넌트에게 context의 변화를 알리는 역할을 한다. Context에서 사용할 값을 설정할 때 사용한다.
+
+```react
+import React from 'react';
+import LeftPane from './components/LeftPane';
+import RightPane from './components/RightPane';
+import { SampleProvider } from './contexts/sample';
+
+const App = () => {
+  return (
+    <SampleProvider>
+      <div className="panes">
+        <LeftPane />
+        <RightPane />
+      </div>
+    </SampleProvider>
+  );
+};
+
+export default App;
+```
+
+
 
 ### Class.contextType
 
@@ -83,11 +109,34 @@ context를 구독하는 컴포넌트에게 context의 변화를 알리는 역할
 
 ### Context.Consumer
 
-context 구독
+context를 구독하여 설정한 값을 불러올 때 사용한다.
+
+```react
+import React from 'react';
+import { SampleConsumer } from '../contexts/sample';
+
+const Receives = () => {
+  return (
+    <SampleConsumer>
+      {
+        (sample) => (
+          <div>
+            현재 설정된 값: { sample.state.value }
+          </div>
+        )
+      }
+    </SampleConsumer>
+  );
+};
+
+export default Receives;
+```
+
+
 
 ### Context.displayName
 
-개발자 도구에서 표현되는 문자열
+개발자 도구에서 표현되는 문자열을 설정한다.
 
 
 
@@ -127,9 +176,7 @@ class App extends React.Component {
 
 
 
-## 상태 관리 라이브러리와 비교
-
-### Redux
+## Redux와 비교
 
 Context API와 Redux는 사용법과 그 구조에 조금 차이가 있을 뿐 전역 상태를 관리한다는 점에서는 유사하다. 애초에 Redux가 Context API를 기반으로 만들어진 것이기 때문이기도 하다.
 
