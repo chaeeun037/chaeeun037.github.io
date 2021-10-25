@@ -114,13 +114,60 @@ function logProps(Component) {
 
 ## DevTools에 사용자 정의 이름 표시
 
+> DevTools에 다음과 같이 표시된다.
+
+### ForwardRef
+
+```react
+const WrappedComponent = React.forwardRef((props, ref) => {
+  return <LogProps {...props} forwardedRef={ref} />;
+});
+```
+
+### ForwardRef(myFunction)
+
+렌더링 함수를 지정할 수 있다.
+
+```react
+const WrappedComponent = React.forwardRef(
+  function myFunction(props, ref) {
+    return <LogProps {...props} forwardedRef={ref} />;
+  }
+);
+```
+
+### 사용자 정의 이름
+
+감싸고 있는 컴포넌트를 포함하도록 `displayName`속성을 설정할 수 있다.
+
+```react
+function logProps(Component) {
+  class LogProps extends React.Component {
+    // ...
+  }
+
+  function forwardRef(props, ref) {
+    return <LogProps {...props} forwardedRef={ref} />;
+  }
+
+  // DevTools에서 이 컴포넌트에 조금 더 유용한 표시 이름을 지정하세요.
+  // 예, "ForwardRef(logProps(MyComponent))"
+  const name = Component.displayName || Component.name;  forwardRef.displayName = `logProps(${name})`;
+  return React.forwardRef(forwardRef);
+}
+```
 
 
 
+## useRef vs forwardRef?
 
+> [출처](https://merrily-code.tistory.com/121)
 
+함수 컴포넌트는 인스턴스가 없기 때문에 ref가 존재하지 않는다. [참고](https://ko.reactjs.org/docs/refs-and-the-dom.html#accessing-refs)
 
-## useRef랑 차이?
+따라서 `useRef`를 통해 함수 컴포넌트를 제어할 수 없다.
 
-`useRef`는 부모 컴포넌트에서 참조할 자식 컴포넌트를 설정할 때 사용하고, `forwardRef`는 자식 트리에서 원하는 컴포넌트만 콕 찝어서 가져올때 사용한다.
+이 때 `forwardRef`를 사용하면 부몬 컴포넌트에서 하위 컴포넌트로 ref를 전달할 수 있어서 함수 컴포넌트 역시 ref를 통한 제어가 가능하다.
+
+이 외에도 커스텀 컴포넌트인 경우에도 ref 속성이 존재하지 않을 때 `forwardRef`를 사용할 수 있다.
 
