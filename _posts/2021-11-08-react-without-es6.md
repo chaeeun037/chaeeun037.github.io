@@ -150,6 +150,8 @@ var SayHello = createReactClass({
 ## Mixins
 
 > 주의: mixin은 ES6에서 별도의 지원이 없기 때문에 참고만 하고 사용하지 않는 것을 추천한다.
+>
+> [참고](https://itmining.tistory.com/124)
 
 관계 없는 컴포넌트들이 유사한 기능을 공유할 수도 있다. 이러한 [횡단 관심사](https://ko.wikipedia.org/wiki/횡단_관심사)를 해결하기 위해 `createReactClass`의 `mixins`을 사용할 수 있다.
 
