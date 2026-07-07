@@ -15,7 +15,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const post = getPublishedPost(slug);
   if (!post) return {};
-  return { title: post.title, description: post.description };
+  return {
+    title: post.title,
+    description: post.description,
+    openGraph: {
+      type: "article",
+      title: post.title,
+      description: post.description,
+      url: `/posts/${post.slug}/`,
+      publishedTime: `${post.date}T00:00:00+09:00`,
+      tags: post.tags,
+    },
+  };
 }
 
 export default async function PostPage({ params }: Props) {
