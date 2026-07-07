@@ -37,6 +37,11 @@ export default function RootLayout({
             <Link href="/" className="font-semibold">
               chaeeun037.log
             </Link>
+            <nav className="text-sm text-gray-500">
+              <Link href="/about" className="hover:underline">
+                About
+              </Link>
+            </nav>
           </div>
         </header>
         {children}
