@@ -105,7 +105,7 @@ Claude Code 에이전트가          채은이 직접 다듬어
 | 배포          | GitHub Pages + GitHub Actions                                      | 기존 도메인(chaeeun037.github.io) 유지                                                                                                                                                                            |
 | 언어/스타일   | TypeScript + Tailwind CSS                                          |                                                                                                                                                                                                                   |
 | 콘텐츠 레이어 | gray-matter 기반 직접 구성                                         | 라이브러리 의존 최소화, 파일 기반                                                                                                                                                                                 |
-| 워크벤치 인증 | **v1: Fine-grained PAT 입력** (draft repo 1개, Contents read-only) | 인프라 0, 사용자 1인. OAuth는 브라우저 단독 토큰 교환 불가(CORS + secret)로 프록시 필요 → Could로 이연. 만료는 90일~1년 권장(개인 repo라 무기한도 가능하나 위생상 주기 갱신). 401 응답 시 토큰 삭제 → 재입력 폴백 |
+| 워크벤치 인증 | **v1: Fine-grained PAT 입력** (dev-journal·claude-harness 2개 repo, Contents read-only) | 인프라 0, 사용자 1인. OAuth는 브라우저 단독 토큰 교환 불가(CORS + secret)로 프록시 필요 → Could로 이연. 만료는 90일~1년 권장(개인 repo라 무기한도 가능하나 위생상 주기 갱신). 401 응답 시 토큰 삭제 → 재입력 폴백 |
 | 데이터 저장   | 없음 (DB 미도입)                                                   | 파일 기반 + 런타임 GitHub API                                                                                                                                                                                     |
 
 ### static export 제약 (명시적 인지 사항)
@@ -139,14 +139,19 @@ GitHub Pages 운영 기간 동안 `output: 'export'` 모드 → **API Routes, SS
   - `merged: false` / closed → 리스트 제외
   - `provisional: true` 체인 → "추정치" 뱃지
 - **정렬**: 점수 내림차순(runs는 `total`, chains는 `narrative_value`) / 최신순(runs는 `created`, chains는 `span.to`)
-- **미리보기 경로 매핑**: HARNESS run은 `artifact` 필드 경로 사용. FE run은 pool(`.agents/runs-archive`) + run ID 기반 규칙 — 규칙 확정 필요(미결 1번).
+- **미리보기 경로 매핑** (2026-07-07 확정, OQ-1):
+  - HARNESS run: `artifact: claude-notes/<파일>.md` → dev-journal repo `momsitter/<파일>.md` (prefix `claude-notes/` → `momsitter/` 치환)
+  - FE run: **claude-harness repo**의 `runs-archive/{run-id}/` 디렉토리 (미아카이브 최신 run은 `runs/{run-id}/` 폴백). 단일 md가 아닌 디렉토리이며, 미리보기 대표 문서 우선순위: `implementation.md` → `plan.md` → `task.md`
+  - 따라서 **PAT는 dev-journal + claude-harness 2개 private repo Contents read-only 필요** (7장 갱신됨)
 - dims 레이더/막대 시각화(rubric의 `dims_order`·`weights` 활용)는 Could.
 
 ## 10. 미결 사항 (Open Questions)
 
-1. FE run의 **run ID → md 파일 경로 매핑 규칙** 확인 (`.agents/runs-archive/{run-id}.md` 성립 여부) — 구현 착수 시 레포 확인으로 즉시 해소 가능.
+없음.
 
 ### 해소된 미결 사항 (기록)
+
+- ~~FE run의 run ID → md 파일 경로 매핑 규칙~~ → **`.agents/runs-archive/{run-id}.md` 단일 파일 가설 불성립.** 실제는 claude-harness repo `runs-archive/{run-id}/` 디렉토리(멀티 파일). 확정 규칙은 9장 (2026-07-07, OQ-1)
 
 - ~~점수 시스템 연동 스펙~~ → 9장으로 확정 (2026-07-07)
 - ~~기존 글 아카이브 노출 여부~~ → **당분간 미노출.** 신규 글이 충분히 쌓인 뒤 노출 전환 검토 (2026-07-07)
