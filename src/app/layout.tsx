@@ -44,6 +44,13 @@ export default function RootLayout({
       lang="ko"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
+      <head>
+        {/* 탐험 일지 테마 픽셀 폰트 (About 캐릭터 시트 등에서 사용). Google Fonts 미제공이라 CDN 로드 */}
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/galmuri/dist/galmuri.css"
+        />
+      </head>
       <body className="flex min-h-full flex-col">
         <header className="border-b border-gray-100 dark:border-gray-800">
           <div className="mx-auto flex w-full max-w-2xl items-center justify-between px-6 py-4">

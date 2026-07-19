@@ -39,3 +39,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# pnpm 단일 락파일 정책 — 다른 락파일 생성 금지
+yarn.lock
+package-lock.json
