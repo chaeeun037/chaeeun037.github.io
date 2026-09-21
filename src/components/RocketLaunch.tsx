@@ -18,9 +18,14 @@ import { TEASER_STAR_COUNT } from "@/lib/observatory";
 export default function RocketLaunch() {
   const router = useRouter();
   const [launching, setLaunching] = useState(false);
-  const timer = useRef<number | null>(null);
+  const navigated = useRef(false);
 
-  const go = () => router.push("/observatory");
+  // 길이를 CSS 와 JS 양쪽에 적으면 한쪽만 고쳤을 때 조용히 어긋난다 — 끝났다는 신호를 CSS 가 주게 한다
+  const go = () => {
+    if (navigated.current) return;
+    navigated.current = true;
+    router.push("/observatory");
+  };
 
   const onClick = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -28,7 +33,8 @@ export default function RocketLaunch() {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return go();
     if (launching) return;
     setLaunching(true);
-    timer.current = window.setTimeout(go, 620);
+    // animationend 가 오지 않는 경우(탭 비활성 등)에도 버튼이 먹통이 되면 안 된다
+    window.setTimeout(go, 2000);
   };
 
   return (
@@ -38,7 +44,14 @@ export default function RocketLaunch() {
       onClick={onClick}
       aria-label={`관측소로 이동 — 아직 글이 되지 않은 기록 ${TEASER_STAR_COUNT}개`}
     >
-      <span className="rocket" aria-hidden="true">
+      <span
+        className="rocket"
+        aria-hidden="true"
+        // 화염(sputter)은 infinite 라 end 가 없다. 이름으로 한 번 더 걸러 둔다
+        onAnimationEnd={(e) => {
+          if (e.animationName === "liftoff") go();
+        }}
+      >
         <Image
           src="/pixel/land-rocket-13x112.png"
           width={13}
