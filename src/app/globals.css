@@ -1,9 +1,43 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+/* `dark:` 변형을 미디어쿼리가 아니라 **클래스 기반**으로 바꾼다.
+   단일 다크 테마라 html 에 .dark 가 항상 붙어 있고, 그래서 기존 `dark:` 스타일
+   (워크벤치 등 THEME-1 스코프 밖 화면)이 계속 살아 있다.
+   이 선언이 없으면 prefers-color-scheme 를 안 쓰는 순간 그 화면들이 라이트 스타일로
+   되돌아가 심해 배경 위에 얹힌다. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ──────────────────────────────────────────────────────────
+   탐험 일지 테마 — 확정 컬러 토큰 (디자인 핸드오프 2026-07-07 §2)
+   **단일 다크(심해) 테마.** 자동 다크모드는 쓰지 않는다 —
+   2026-07-09 결정: 디자인 요소 컨트롤 단순화. 낮/밤 전환은 별도 티켓(#32).
+   그래서 prefers-color-scheme 분기가 없는 게 정상이다(지운 게 아니라 안 쓰는 것).
+   ────────────────────────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --c-sky: #c9edf9;         /* 하늘 */
+  --c-meadow: #7c9b6c;      /* 육지 — 저명도·저채도 그린 */
+  --c-shallow: #5e92ab;     /* 얕은 물 */
+  --c-mid-water: #1a6b8a;   /* 중층 — 배경 그라데이션 경유색 */
+  --c-deep: #0d2b45;        /* 심해 = 페이지 기본 배경 */
+  --c-deeper: #081d30;      /* 카드·푸터 대비면 */
+  --c-campfire: #ffb347;    /* CTA, 대표글 마킹, 심해 등급 뱃지 */
+  --c-campfire-shadow: #c77f2b;
+  --c-accent: #4ecdc4;      /* UI 액센트 전용(뱃지·링크). 배경 사용 금지 */
+
+  --t-primary: #edf2f7;
+  --t-secondary: #a8bccb;
+  /* 핸드오프 원안은 #6e8598 이었으나 심해 배경 대비 3.78:1 로 AA(4.5) 미달이었다.
+     #27 인수 조건이 "본문 AA 대비 유지"라 색상은 그대로 두고 밝기만 1.11배 올렸다 → 4.56:1 */
+  --t-muted: #7a94a9;
+  --t-on-warm: #2b1d0e;
+
+  --line: #16405f;
+
+  --font-pixel: Galmuri11, Galmuri9, ui-monospace, monospace;
+
+  --background: var(--c-deep);
+  --foreground: var(--t-primary);
 }
 
 @theme inline {
@@ -11,13 +45,6 @@
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
 }
 
 body {
@@ -32,20 +59,8 @@ body {
    전역 테마 적용은 후속 작업. 지금은 .charsheet 안으로만 한정한다.
    ────────────────────────────────────────────────────────── */
 .charsheet {
-  --c-sky: #c9edf9;
+  /* 토큰은 :root 로 승격됐다(THEME-1). 여기 남은 건 이 스코프 고유값뿐 */
   --c-shore: #4a9db0;
-  --c-shallow: #5e92ab;
-  --c-mid-water: #1a6b8a;
-  --c-deep: #0d2b45;
-  --c-deeper: #081d30;
-  --c-campfire: #ffb347;
-  --c-campfire-shadow: #c77f2b;
-  --c-accent: #4ecdc4;
-  --t-primary: #edf2f7;
-  --t-secondary: #a8bccb;
-  --t-muted: #6e8598;
-  --t-on-warm: #2b1d0e;
-  --font-pixel: Galmuri11, Galmuri9, ui-monospace, monospace;
 
   background: var(--c-deep);
   color: var(--t-primary);
@@ -292,4 +307,127 @@ body {
 .prose [data-rehype-pretty-code-figure] code {
   font-family: var(--font-mono), ui-monospace, monospace;
   font-size: 0.875rem;
+}
+
+/* ──────────────────────────────────────────────────────────
+   Zone B 공통 (THEME-1) — 목록·상세·헤더
+   히어로 씬과 다이버 트랙은 Zone A(#28)라 여기 없다.
+   ────────────────────────────────────────────────────────── */
+
+/* 링크는 액센트, 본문은 primary. 액센트는 배경에 쓰지 않는다(핸드오프 §2) */
+.zb-link {
+  color: var(--c-accent);
+  text-decoration: none;
+}
+.zb-link:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.zb-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: color-mix(in srgb, var(--c-deep) 92%, transparent);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--line);
+}
+
+/* 로고 — 16² 픽셀 마크는 다음 에셋 배치에서 붙인다(1차 배치에 로고가 없다).
+   자리는 비워두지 않고 텍스트로 먼저 세운다. */
+.zb-logo {
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  color: var(--t-primary);
+}
+
+.zb-icon {
+  color: var(--t-muted);
+  transition: color 0.15s;
+}
+.zb-icon:hover {
+  color: var(--c-accent);
+}
+
+/* 깊이 뱃지 — 미니 게이지 3바 + 등급 단어.
+   숫자·단위 표기 금지(-40m 폐기, 핸드오프 §5). lv3만 캠프파이어색으로
+   대표글 마킹과 색 언어를 통일한다. */
+.depth {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--t-muted);
+  white-space: nowrap;
+}
+.depth-gauge {
+  display: inline-flex;
+  gap: 2px;
+  align-items: flex-end;
+}
+.depth-bar {
+  width: 3px;
+  background: var(--line);
+  border-radius: 1px;
+}
+.depth-bar:nth-child(1) { height: 5px; }
+.depth-bar:nth-child(2) { height: 8px; }
+.depth-bar:nth-child(3) { height: 11px; }
+.depth-bar.on { background: var(--c-accent); }
+.depth-3 .depth-bar.on { background: var(--c-campfire); }
+.depth-3 { color: var(--c-campfire); }
+
+/* 도감 카드 — 대표 기록. 픽셀 그림자는 4px 오프셋·블러 0(하드 엣지 원칙) */
+.dex-card {
+  position: relative;
+  display: block;
+  background: var(--c-deeper);
+  border: 2px solid var(--line);
+  box-shadow: 4px 4px 0 0 var(--c-deeper);
+  padding: 18px 20px 16px;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+}
+.dex-card:hover {
+  border-color: var(--c-campfire);
+  box-shadow: 4px 4px 0 0 var(--c-campfire-shadow);
+  transform: translate(-1px, -1px);
+}
+.dex-card:focus-visible {
+  outline: 2px solid var(--c-accent);
+  outline-offset: 3px;
+}
+/* No.01~03 탭 — 우상단, 카드 위로 물려 올라간다 */
+.dex-no {
+  position: absolute;
+  top: -2px;
+  right: 14px;
+  background: var(--c-campfire);
+  color: var(--t-on-warm);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  padding: 3px 7px 2px;
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dex-card { transition: none; }
+  .dex-card:hover { transform: none; }
+}
+
+/* 본문 prose — 토큰 색으로 맞춘다. prose-invert 기본 회색은 심해 배경과 안 어울린다 */
+.zb-prose {
+  --tw-prose-invert-body: var(--t-secondary);
+  --tw-prose-invert-headings: var(--t-primary);
+  --tw-prose-invert-bold: var(--t-primary);
+  --tw-prose-invert-links: var(--c-accent);
+  --tw-prose-invert-quotes: var(--t-secondary);
+  --tw-prose-invert-quote-borders: var(--line);
+  --tw-prose-invert-hr: var(--line);
+  --tw-prose-invert-captions: var(--t-muted);
+  --tw-prose-invert-counters: var(--t-muted);
+  --tw-prose-invert-bullets: var(--line);
+  --tw-prose-invert-td-borders: var(--line);
+  --tw-prose-invert-th-borders: var(--line);
 }

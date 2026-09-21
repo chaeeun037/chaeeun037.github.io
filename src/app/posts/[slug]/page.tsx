@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { renderMarkdown } from "@/lib/markdown";
+import DepthBadge from "@/components/DepthBadge";
 import { getPublishedPost, getPublishedPosts } from "@/lib/posts";
 
 export const dynamicParams = false;
@@ -39,17 +40,21 @@ export default async function PostPage({ params }: Props) {
   return (
     <main className="mx-auto w-full max-w-2xl px-6 py-10">
       <header className="mb-8">
-        <h1 className="text-3xl font-bold">{post.title}</h1>
-        <div className="mt-3 flex items-center gap-3 text-sm text-gray-400">
-          <time dateTime={post.date}>{post.date}</time>
+        <h1 className="text-3xl font-bold text-[var(--t-primary)]">{post.title}</h1>
+        <div className="mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-[var(--t-muted)]">
+          <time dateTime={post.date} className="tabular-nums">
+            {post.date}
+          </time>
+          {post.depth && <DepthBadge depth={post.depth} />}
           {post.series && <span>· {post.series}</span>}
           {post.tags.map((tag) => (
             <span key={tag}>#{tag}</span>
           ))}
         </div>
       </header>
+      {/* 단일 다크 테마라 prose-invert 를 조건 없이 건다 — dark: 변형은 자동 다크모드 전제라 안 맞는다 */}
       <article
-        className="prose prose-neutral max-w-none dark:prose-invert"
+        className="prose prose-invert prose-neutral max-w-none zb-prose"
         dangerouslySetInnerHTML={{ __html: html }}
       />
     </main>

@@ -1,26 +1,43 @@
 import Link from "next/link";
+import DepthBadge from "@/components/DepthBadge";
 import PostListItem from "@/components/PostListItem";
 import { getFeaturedPosts, getPublishedPosts } from "@/lib/posts";
 
 export default function Home() {
-  const featured = getFeaturedPosts().slice(0, 5);
+  // 도감 카드는 3장까지 — 핸드오프 §4-5 의 No.01~03 탭이 3장을 전제한다
+  const featured = getFeaturedPosts().slice(0, 3);
   const posts = getPublishedPosts();
 
   return (
     <main className="mx-auto w-full max-w-2xl px-6 py-10">
       {featured.length > 0 && (
-        <section className="mb-10">
-          <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400">
-            대표글
+        <section className="mb-12">
+          <h2 className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--t-muted)]">
+            대표 기록
           </h2>
-          <ul className="mt-2">
-            {featured.map((post) => (
+          {/* 도감 카드 — 2px 보더 + 4px 픽셀 그림자. 번호 탭은 우상단(§4-5) */}
+          <ul className="mt-4 flex flex-col gap-5">
+            {featured.map((post, i) => (
               <li key={post.slug}>
-                <Link href={`/posts/${post.slug}`} className="group block py-3">
-                  <h3 className="font-semibold group-hover:underline">{post.title}</h3>
-                  <p className="mt-1 text-sm text-gray-600 dark:text-gray-400">
+                <Link href={`/posts/${post.slug}`} className="dex-card group">
+                  <span className="dex-no">
+                    No.{String(i + 1).padStart(2, "0")}
+                  </span>
+                  <h3 className="pr-16 font-semibold text-[var(--t-primary)] underline-offset-4 group-hover:underline">
+                    {post.title}
+                  </h3>
+                  <p className="mt-1.5 text-sm text-[var(--t-secondary)]">
                     {post.description}
                   </p>
+                  <div className="mt-3 flex items-center gap-3">
+                    {post.depth && <DepthBadge depth={post.depth} />}
+                    <time
+                      dateTime={post.date}
+                      className="text-xs tabular-nums text-[var(--t-muted)]"
+                    >
+                      {post.date}
+                    </time>
+                  </div>
                 </Link>
               </li>
             ))}
@@ -29,15 +46,17 @@ export default function Home() {
       )}
 
       {posts.length === 0 ? (
-        <p className="py-20 text-center text-gray-500">아직 발행된 글이 없습니다.</p>
+        <p className="py-20 text-center text-[var(--t-muted)]">
+          아직 발행된 글이 없습니다.
+        </p>
       ) : (
         <section>
           {featured.length > 0 && (
-            <h2 className="text-sm font-semibold uppercase tracking-wide text-gray-400">
-              모든 글
+            <h2 className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--t-muted)]">
+              모든 기록
             </h2>
           )}
-          <ul className="divide-y divide-gray-100 dark:divide-gray-800">
+          <ul className="divide-y divide-[var(--line)]">
             {posts.map((post) => (
               <PostListItem key={post.slug} post={post} />
             ))}

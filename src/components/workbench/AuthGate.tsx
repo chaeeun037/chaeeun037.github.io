@@ -52,7 +52,7 @@ export default function AuthGate({ children }: Props) {
     return (
       <div className="mx-auto w-full max-w-md px-6 py-20">
         <h1 className="text-xl font-bold">Workbench</h1>
-        <p className="mt-2 text-sm text-gray-500">
+        <p className="mt-2 text-sm text-[var(--t-secondary)]">
           비공개 영역입니다. <code>{DRAFT_REPO}</code>·<code>{RUNS_REPO}</code>에 Contents
           read 권한이 있는 fine-grained PAT를 입력하세요.
         </p>
@@ -86,7 +86,7 @@ export default function AuthGate({ children }: Props) {
             tokenStore.clear();
             setToken(null);
           }}
-          className="text-xs text-gray-400 hover:underline"
+          className="text-xs text-[var(--t-muted)] hover:underline"
         >
           토큰 삭제(로그아웃)
         </button>

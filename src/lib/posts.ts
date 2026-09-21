@@ -6,6 +6,22 @@ const POSTS_DIR = path.join(process.cwd(), "content", "posts");
 
 export type PostStatus = "draft" | "published";
 
+/**
+ * 깊이 등급 — **저자의 에디토리얼 선언**이다(핸드오프 §5).
+ * 원장 점수·글자 수 같은 것에서 자동 산출하지 않는다. 축이 다르다.
+ *   1 스노클 — 하나의 개념·팁·도구 소개
+ *   2 다이빙 — 문제→원인→해결의 완결 과정, "왜"가 1층 이상
+ *   3 심해   — 다층 원인 규명·시스템 설계 판단·검증/재발 방지 포함
+ * 운영 규칙: **심해 인플레이션 금지.** 심해 비중이 낮을수록 신뢰 신호다.
+ */
+export type PostDepth = 1 | 2 | 3;
+
+export const DEPTH_LABEL: Record<PostDepth, string> = {
+  1: "스노클",
+  2: "다이빙",
+  3: "심해",
+};
+
 export interface PostMeta {
   slug: string;
   title: string;
@@ -17,6 +33,8 @@ export interface PostMeta {
   /** 대표글 여부 — 랜딩 큐레이션(BLOG-4)에서 사용 */
   featured: boolean;
   status: PostStatus;
+  /** 미지정이면 뱃지를 붙이지 않는다 — 선언 안 한 글에 등급을 지어내지 않기 위해서다 */
+  depth?: PostDepth;
 }
 
 export interface Post extends PostMeta {
@@ -60,6 +78,10 @@ function parsePost(fileName: string): Post {
   if (data.tags !== undefined && !Array.isArray(data.tags)) {
     throw new FrontmatterError(slug, `frontmatter "tags"는 문자열 배열이어야 합니다`);
   }
+  // 잘못된 값은 조용히 무시하지 않고 빌드를 막는다 — frontmatter 검증이 발행 관문이다(docs/publishing.md)
+  if (data.depth !== undefined && ![1, 2, 3].includes(data.depth)) {
+    throw new FrontmatterError(slug, `frontmatter "depth"는 1(스노클)·2(다이빙)·3(심해) 중 하나여야 합니다 (현재: ${data.depth})`);
+  }
 
   return {
     slug,
@@ -70,6 +92,7 @@ function parsePost(fileName: string): Post {
     series: typeof data.series === "string" ? data.series : undefined,
     featured: data.featured === true,
     status,
+    depth: data.depth as PostDepth | undefined,
     content,
   };
 }
