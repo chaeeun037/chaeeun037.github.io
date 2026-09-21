@@ -40,9 +40,9 @@ export default function RocketLaunch() {
     >
       <span className="rocket" aria-hidden="true">
         <Image
-          src="/pixel/land-rocket-25x48.png"
-          width={25}
-          height={48}
+          src="/pixel/land-rocket-13x112.png"
+          width={13}
+          height={112}
           alt=""
           className="px-art"
           unoptimized

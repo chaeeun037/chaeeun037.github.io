@@ -857,11 +857,16 @@ body { overflow-x: hidden; }
    무엇을 누르라는 건지 읽히지 않았다. 로켓은 행동이 분명하다(2026-09-22). */
 .launchpad {
   position: absolute;
-  right: max(24px, calc((100vw - 1040px) / 2 + 24px));
-  top: -34px;
+  /* 오른쪽 끝에 세우니 텐트·랜턴까지 한쪽에 몰려 우측이 무거웠다 —
+     모닥불과 지름길 사이 빈 자리로 옮긴다. 기준선은 콘텐츠 왼쪽 가장자리 */
+  left: calc(max(24px, (100vw - 1040px) / 2 + 24px) + 36%);
+  /* 나로호는 112px 다 — 엔진이 지면 살짝 아래에 묻히도록 올려 세운다 */
+  top: -106px;
   display: flex;
-  align-items: center;
-  gap: 12px;
+  /* 문구는 로켓 발치에. 가운데 정렬하면 문구가 하늘에 뜬다 */
+  align-items: flex-end;
+  gap: 10px;
+  padding-bottom: 4px;
   text-decoration: none;
   z-index: 3;
 }
@@ -876,9 +881,9 @@ body { overflow-x: hidden; }
 /* 분사 불꽃 — 호버·발사에서만 보인다. 픽셀 에셋에 맞춰 몸체 아래에 붙는다 */
 .flame {
   position: absolute;
-  left: 50%; bottom: -8px;
-  width: 9px; height: 12px;
-  margin-left: -4.5px;
+  left: 50%; bottom: -7px;
+  width: 7px; height: 11px;
+  margin-left: -3.5px;
   background: var(--c-campfire);
   border-radius: 0 0 50% 50%;
   opacity: 0;
@@ -890,7 +895,15 @@ body { overflow-x: hidden; }
 .launchpad:focus-visible { outline: 2px solid var(--c-campfire-shadow); outline-offset: 6px; }
 
 /* 문구 — 한 줄로 늘어지면 라벨이 아니라 문장으로 읽힌다. 이름과 설명을 층으로 나눈다 */
-.launch-text { display: flex; flex-direction: column; gap: 1px; line-height: 1.3; }
+/* 로켓 발치는 곧 경계선이라, 거기 맞추면 문구가 하늘에 걸려 흐려진다.
+   텐트·랜턴 라벨과 같이 풀밭 위로 끌어내린다 */
+.launch-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  line-height: 1.3;
+  margin-bottom: -34px;
+}
 .launch-text strong {
   font-size: 13px;
   font-weight: 700;
@@ -922,7 +935,7 @@ body { overflow-x: hidden; }
 .launchpad.is-launching .launch-text { opacity: 0; transition: opacity 0.2s; }
 
 @media (max-width: 680px) {
-  .launchpad { right: 16px; top: -30px; }
+  .launchpad { left: 52%; top: -96px; }
   .launch-text em { display: none; }
 }
 
