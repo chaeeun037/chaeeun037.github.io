@@ -57,7 +57,7 @@ export default function RootLayout({
             랜딩의 지름길 아이콘(텐트→About, 랜턴→모든 기록)이 내비를 대체한다(핸드오프 §4-1).
             그 지름길은 히어로 씬(#28)에 있으므로, 그때까지 About 은 랜딩 하단·직접 URL 로 간다. */}
         <header className="zb-header">
-          <div className="wrap flex items-center justify-between py-4">
+          <div className="wrap flex items-center justify-between py-6">
             <Link href="/" className="zb-logo">
               {SITE_NAME}
             </Link>
@@ -89,7 +89,7 @@ export default function RootLayout({
         {/* 푸터 (핸드오프 §4-7). About 링크를 여기 둔 건 헤더에서 뺐기 때문이다 —
             대체 경로인 히어로 지름길(텐트→About)이 #28 이라 아직 없어서, 그때까지 유일한 진입점이다. */}
         <footer className="mt-auto" style={{ background: "var(--c-deeper)", borderTop: "1px solid var(--line)" }}>
-          <div className="wrap flex flex-wrap items-center justify-between gap-3 py-6 text-sm">
+          <div className="wrap flex flex-wrap items-center justify-between gap-3 py-10 text-sm">
             <span className="text-[var(--t-muted)]">베이스캠프에서 기록함</span>
             <nav className="flex items-center gap-4">
               <Link href="/about" className="zb-link">

@@ -12,7 +12,7 @@ import {
   type Star,
 } from "@/lib/observatory";
 
-type Placed = Star & { x: number; y: number; z: number; color: string };
+type Placed = Star & { x: number; y: number; z: number; color: string; order: number };
 
 const UNIT: Record<number, number> = { 1: 1.6, 2: 1.5, 3: 1.7, 4: 1.8, 5: 1.9 };
 
@@ -55,6 +55,7 @@ export default function Sky({ snapshot }: { snapshot: ObservatorySnapshot }) {
       const y = s.written ? h - 72 - r() * 52 : 36 + r() * Math.max(1, h - 160);
       const p: Placed = {
         ...s,
+        order: 0,
         x,
         y,
         z: 0.45 + r() * 0.55,
@@ -78,6 +79,11 @@ export default function Sky({ snapshot }: { snapshot: ObservatorySnapshot }) {
         p.y = Math.max(26, Math.min(h - 130, cy + Math.sin(ang) * rad));
       }
     }
+    // 등장 순서 — 밝은 별부터. 실제로 밤하늘에 눈이 적응하는 순서와 같아 자연스럽다.
+    const order = [...placed].sort((a, b) => b.magnitude - a.magnitude);
+    order.forEach((p, i) => {
+      p.order = i;
+    });
     return { placed, byId };
   }, [snapshot, size]);
 
@@ -165,7 +171,7 @@ export default function Sky({ snapshot }: { snapshot: ObservatorySnapshot }) {
           ))}
         </defs>
 
-        {ready && lines.map(({ c, pts }) => (
+        {ready && lines.map(({ c, pts }, ci) => (
           <g
             key={c.id}
             className="obs-cons"
@@ -179,6 +185,9 @@ export default function Sky({ snapshot }: { snapshot: ObservatorySnapshot }) {
                 y1={p.y}
                 x2={pts[i + 1].x}
                 y2={pts[i + 1].y}
+                pathLength={1}
+                className="cons-draw"
+                style={{ animationDelay: `${1150 + ci * 70 + i * 40}ms` }}
                 shapeRendering="crispEdges"
               />
             ))}
@@ -190,8 +199,7 @@ export default function Sky({ snapshot }: { snapshot: ObservatorySnapshot }) {
                 y1={p.y}
                 x2={pts[i + 1].x}
                 y2={pts[i + 1].y}
-                stroke="transparent"
-                strokeWidth="12"
+                className="cons-hit"
               />
             ))}
           </g>
@@ -208,6 +216,7 @@ export default function Sky({ snapshot }: { snapshot: ObservatorySnapshot }) {
               onMouseEnter={() => setHover({ kind: "star", data: s, x: s.x, y: s.y })}
               onMouseLeave={() => setHover(null)}
             >
+              <g className="star-in" style={{ animationDelay: `${s.order * 14}ms` }}>
               {s.merged && s.magnitude >= 2 && (
                 <circle r={u * (s.magnitude + 2) * 1.8} fill={`url(#halo${haloIdx})`} />
               )}
@@ -255,6 +264,7 @@ export default function Sky({ snapshot }: { snapshot: ObservatorySnapshot }) {
                   shapeRendering="crispEdges"
                 />
               ))}
+              </g>
               <circle r={Math.max(10, u * 4)} fill="transparent" />
             </g>
           );

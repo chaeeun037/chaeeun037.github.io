@@ -75,8 +75,6 @@ body {
 .charsheet .wrap {
   max-width: 1040px;
   margin: 0 auto;
-  /* `padding` 축약을 쓰면 세로 padding 까지 0 으로 덮어써서 헤더·푸터의 py-* 유틸이 죽는다
-     (2026-09-22 헤더 높이가 무너짐). 가로만 지정한다. */
   padding-inline: 24px;
 }
 
@@ -452,7 +450,10 @@ body {
 .wrap {
   max-width: 1040px;
   margin: 0 auto;
-  padding: 0 24px;
+  /* `padding` 축약을 쓰면 세로까지 0 으로 덮어써 헤더·푸터의 py-* 유틸이 죽는다
+     (2026-09-22 헤더 높이가 두 번 무너졌다 — `.charsheet .wrap` 과 헷갈려 엉뚱한 쪽을 고쳤다).
+     가로만 지정한다. */
+  padding-inline: 24px;
 }
 
 .hero-sky { background: var(--c-sky); }
@@ -740,6 +741,17 @@ body { overflow-x: hidden; }
 .obs-cons:hover line {
   stroke-opacity: 0.55;
 }
+/* 호버 판정용 두꺼운 투명선.
+   `.obs-cons line` 의 stroke-width:1 이 **속성보다 우선**하므로 CSS 로 지정해야 한다 —
+   속성으로 strokeWidth="12" 를 줬더니 1px 로 눌려 선을 정확히 짚어야 했다(2026-09-22). */
+.obs-cons line.cons-hit {
+  stroke: transparent;
+  stroke-width: 18;
+  stroke-opacity: 1;
+}
+.obs-cons:hover line.cons-hit {
+  stroke-opacity: 1;
+}
 .obs-sky g {
   cursor: default;
 }
@@ -903,3 +915,35 @@ body { overflow-x: hidden; }
 .obs-modal .dim { opacity: 0.42; }
 .obs-modal .temps { display: flex; gap: 3px; width: 34px; flex-wrap: wrap; }
 .obs-modal .temps i { width: 14px; height: 14px; border-radius: 2px; }
+
+/* ── 관측소 등장 애니메이션 ──
+   배경(성운·먼지)은 정적이라 즉시 깔리고, 별만 하나씩 켜진다.
+   밝은 별부터 뜨는 이유는 실제로 밤하늘에 눈이 적응하는 순서라서다. */
+@keyframes star-in {
+  from { opacity: 0; transform: scale(0.3); }
+  60%  { opacity: 1; }
+  to   { opacity: 1; transform: scale(1); }
+}
+.star-in {
+  opacity: 0;
+  animation: star-in 520ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* 선은 별이 다 뜬 뒤 이어지듯 그려진다 — pathLength=1 이라 dash 값이 비율이 된다 */
+@keyframes cons-draw {
+  from { stroke-dashoffset: 1; }
+  to   { stroke-dashoffset: 0; }
+}
+.cons-draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: cons-draw 620ms ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .star-in,
+  .cons-draw {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+  }
+}
