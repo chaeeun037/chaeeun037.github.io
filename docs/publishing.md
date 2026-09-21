@@ -12,4 +12,4 @@
 ## 주의
 
 - draft 글(`status: draft` 또는 status 생략)은 목록·상세 어디에도 생성되지 않는다
-- published 글이 0편이면 빌드가 실패한다 (`output: export`의 dynamic route 제약). 최소 1편은 항상 published 상태여야 한다
+- ~~published 글이 0편이면 빌드가 실패한다~~ **해소됨(2026-09-21).** `output: export`가 동적 라우트에 정적 경로를 최소 하나 요구하는 건 여전하지만, 글이 0편일 때만 자리 채움 슬러그 하나를 내보내고 그 경로를 `notFound()`로 떨어뜨린다(`src/app/posts/[slug]/page.tsx`). 글이 한 편이라도 있으면 그 슬러그는 생성되지 않는다.

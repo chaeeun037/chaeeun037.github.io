@@ -6,8 +6,19 @@ import { getPublishedPost, getPublishedPosts } from "@/lib/posts";
 
 export const dynamicParams = false;
 
+/**
+ * `output: export`는 동적 라우트에 **정적 경로가 최소 하나** 있기를 요구한다.
+ * 빈 배열을 주면 "generateStaticParams가 없다"며 빌드가 통째로 깨진다 —
+ * 그래서 발행 글이 0편이면 사이트 전체를 빌드할 수 없었다(2026-09-21 이전 제약).
+ *
+ * 글이 0편일 때만 자리 채움 슬러그 하나를 내보내고, 그 경로는 아래에서 notFound()로 떨어뜨린다.
+ * 글이 한 편이라도 있으면 이 슬러그는 **생성되지 않는다** — 평소 산출물은 그대로다.
+ */
+const EMPTY_PLACEHOLDER_SLUG = "__no-posts__";
+
 export function generateStaticParams() {
-  return getPublishedPosts().map(({ slug }) => ({ slug }));
+  const slugs = getPublishedPosts().map(({ slug }) => ({ slug }));
+  return slugs.length > 0 ? slugs : [{ slug: EMPTY_PLACEHOLDER_SLUG }];
 }
 
 type Props = { params: Promise<{ slug: string }> };
@@ -15,7 +26,8 @@ type Props = { params: Promise<{ slug: string }> };
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
   const post = getPublishedPost(slug);
-  if (!post) return {};
+  // 자리 채움 경로는 정적 export 특성상 200으로 응답한다 — 색인되지 않게 막는다
+  if (!post) return { robots: { index: false, follow: false } };
   return {
     title: post.title,
     description: post.description,
