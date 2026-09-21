@@ -947,3 +947,11 @@ body { overflow-x: hidden; }
     animation-delay: 0ms !important;
   }
 }
+
+/* 불러오는 동안·실패 시 상태 문구 — 하늘 아래 작게 */
+.obs-status {
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--t-muted);
+}
+.obs-status-error { color: var(--c-campfire); }
