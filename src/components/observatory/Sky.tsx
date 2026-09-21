@@ -20,7 +20,8 @@ const UNIT: Record<number, number> = { 1: 1.6, 2: 1.5, 3: 1.7, 4: 1.8, 5: 1.9 };
  * 밤하늘 — 배경(성운·먼지)은 캔버스, 별과 별자리 선은 픽셀 SVG.
  * 배치는 `star.id` 시드 기반이라 같은 스냅샷이면 언제 봐도 같은 하늘이다.
  */
-export default function Sky({ snapshot }: { snapshot: ObservatorySnapshot }) {
+/** snapshot 이 null 이면 배경만 그린다 — 불러오는 동안의 스켈레톤 하늘 */
+export default function Sky({ snapshot }: { snapshot: ObservatorySnapshot | null }) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   // 0 으로 시작해야 서버 렌더와 첫 클라이언트 렌더가 같다.
@@ -46,6 +47,7 @@ export default function Sky({ snapshot }: { snapshot: ObservatorySnapshot }) {
 
   const { placed, byId } = useMemo(() => {
     const { w, h } = size;
+    if (!snapshot) return { placed: [] as Placed[], byId: new Map<string, Placed>() };
     const byId = new Map<string, Placed>();
     const placed: Placed[] = snapshot.stars.map((s) => {
       // id 를 시드로 써야 새로고침마다 별자리가 춤추지 않는다
@@ -143,6 +145,7 @@ export default function Sky({ snapshot }: { snapshot: ObservatorySnapshot }) {
 
   const lines = useMemo(() => {
     const out: { c: Constellation; pts: Placed[] }[] = [];
+    if (!snapshot) return out;
     for (const c of snapshot.constellations) {
       // written 은 하늘을 떠났으므로 선에서 제외한다.
       // 포함하면 수평선까지 선이 끌려 내려가 화면을 가로지른다.
@@ -160,7 +163,7 @@ export default function Sky({ snapshot }: { snapshot: ObservatorySnapshot }) {
       <svg
         width={ready ? size.w : undefined}
         height={ready ? size.h : undefined}
-        role="img" aria-label={`별 ${snapshot.stars.length}개, 별자리 ${snapshot.constellations.length}개`}>
+        role="img" aria-label={snapshot ? `별 ${snapshot.stars.length}개, 별자리 ${snapshot.constellations.length}개` : "하늘을 불러오는 중"}>
         <defs>
           {[...STAR_TEMPS, WATER].map((c, i) => (
             <radialGradient key={c} id={`halo${i}`}>
