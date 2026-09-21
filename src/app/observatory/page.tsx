@@ -23,7 +23,7 @@ export default function ObservatoryPage() {
         </h1>
         <p className="mt-3 text-[var(--t-secondary)]">
           작업 하나가 별 하나입니다. 인과로 이어진 것들은 별자리가 되고,{" "}
-          <strong>밝기는 그 일에 얼마나 깊이 파고들었는지</strong>입니다. 이미 글이 된 것은
+          <strong>밝기는 그 일에 얼마나 깊이 파고들었는지</strong>입니다. 이미 발행된 것은
           유성이 되어 물로 내려갑니다.
         </p>
       </header>

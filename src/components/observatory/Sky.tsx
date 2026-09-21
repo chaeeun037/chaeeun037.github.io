@@ -53,15 +53,15 @@ export default function Sky({ snapshot }: { snapshot: ObservatorySnapshot | null
       // id 를 시드로 써야 새로고침마다 별자리가 춤추지 않는다
       const r = seeded(hashSeed(s.id));
       const x = 40 + r() * Math.max(1, w - 80);
-      // written 은 수평선 근처로 내려간다 — "바다로 내려간 별"
-      const y = s.written ? h - 72 - r() * 52 : 36 + r() * Math.max(1, h - 160);
+      // 발행된 별은 수평선 근처로 내려간다 — "바다로 내려간 별"
+      const y = s.published ? h - 72 - r() * 52 : 36 + r() * Math.max(1, h - 160);
       const p: Placed = {
         ...s,
         order: 0,
         x,
         y,
         z: 0.45 + r() * 0.55,
-        color: s.written ? WATER : STAR_TEMPS[Math.floor(r() * STAR_TEMPS.length)],
+        color: s.published ? WATER : STAR_TEMPS[Math.floor(r() * STAR_TEMPS.length)],
       };
       byId.set(s.id, p);
       return p;
@@ -74,7 +74,7 @@ export default function Sky({ snapshot }: { snapshot: ObservatorySnapshot | null
       const cy = 70 + r() * Math.max(1, h - 230);
       for (const id of c.members) {
         const p = byId.get(id);
-        if (!p || p.written) continue;
+        if (!p || p.published) continue;
         const ang = r() * Math.PI * 2;
         const rad = 38 + r() * 62;
         p.x = Math.max(28, Math.min(w - 28, cx + Math.cos(ang) * rad));
@@ -147,11 +147,11 @@ export default function Sky({ snapshot }: { snapshot: ObservatorySnapshot | null
     const out: { c: Constellation; pts: Placed[] }[] = [];
     if (!snapshot) return out;
     for (const c of snapshot.constellations) {
-      // written 은 하늘을 떠났으므로 선에서 제외한다.
+      // 발행된 별은 하늘을 떠났으므로 선에서 제외한다.
       // 포함하면 수평선까지 선이 끌려 내려가 화면을 가로지른다.
       const pts = c.members
         .map((id) => byId.get(id))
-        .filter((p): p is Placed => !!p && !p.written);
+        .filter((p): p is Placed => !!p && !p.published);
       if (pts.length > 1) out.push({ c, pts });
     }
     return out;
@@ -210,12 +210,12 @@ export default function Sky({ snapshot }: { snapshot: ObservatorySnapshot | null
 
         {ready && placed.map((s) => {
           const u = UNIT[s.magnitude];
-          const haloIdx = s.written ? STAR_TEMPS.length : STAR_TEMPS.indexOf(s.color);
+          const haloIdx = s.published ? STAR_TEMPS.length : STAR_TEMPS.indexOf(s.color);
           return (
             <g
               key={s.id}
               transform={`translate(${Math.round(s.x)},${Math.round(s.y)})`}
-              opacity={s.written ? 1 : (s.merged ? 1 : 0.42) * (0.62 + s.z * 0.38)}
+              opacity={s.published ? 1 : (s.merged ? 1 : 0.42) * (0.62 + s.z * 0.38)}
               onMouseEnter={() => setHover({ kind: "star", data: s, x: s.x, y: s.y })}
               onMouseLeave={() => setHover(null)}
             >
@@ -231,13 +231,11 @@ export default function Sky({ snapshot }: { snapshot: ObservatorySnapshot | null
                   strokeWidth="1"
                 />
               )}
-              {/* 글이 된 별은 **유성**이 되어 물로 내려간다.
+              {/* 발행된 별은 **유성**이 되어 물로 내려간다.
                   수평선을 긋는 대신 꼬리로 방향을 준다 — 선을 그으면 우주에 인위적인 경계가 생긴다.
-                  매끈한 그라데이션 대신 점이 작아지며 흐려지는 픽셀 방식. */}
-              {/* 글이 된 별은 **유성**이 되어 물로 내려간다.
-                  수평선을 긋는 대신 꼬리로 방향을 준다 — 선을 그으면 우주에 인위적인 경계가 생긴다.
+                  매끈한 그라데이션 대신 점이 작아지며 흐려지는 픽셀 방식.
                   꼬리는 세 줄 — 가운데가 길고 진하고, 양옆이 짧고 흐리다. 한 줄이면 점선처럼 보인다. */}
-              {s.written &&
+              {s.published &&
                 [
                   { off: 0, len: 7, a: 0.72, sz: 3 },
                   { off: -2.6, len: 5, a: 0.4, sz: 2.2 },
@@ -295,7 +293,7 @@ export default function Sky({ snapshot }: { snapshot: ObservatorySnapshot | null
               <strong className="obs-glyph">{hover.data.glyph}</strong>
               <span>
                 광도 {hover.data.magnitude} · {hover.data.born.replace("-", "년 ")}월생
-                {hover.data.written && " · 발행됨"}
+                {hover.data.published && " · 발행됨"}
                 {!hover.data.merged && " · 진행 중"}
               </span>
             </>

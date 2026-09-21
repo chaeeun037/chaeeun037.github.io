@@ -14,8 +14,13 @@ export interface Star {
   id: string;
   /** 광도 = 점수 버킷. 1~4는 사분위, 5는 상위 5%. 원점수는 싣지 않는다 */
   magnitude: Magnitude;
-  /** 발행된 글감 — 바다로 내려간 별 */
-  written: boolean;
+  /**
+   * 블로그에 **발행된** 글감 — 바다로 내려간 별.
+   * 원장의 `written` 과 다른 축이다: 원장 written 은 채점 규율에서 "이미 글로 정리됨"(dev-journal
+   * 포폴 노트 포함)이라 10건이 true 인데, 실제 발행글은 1편이다. 유성은 발행을 가리키므로
+   * 새니타이저가 비공개 매핑(`observatory-published.json`)을 보고 이 값을 만든다. (2026-09-22)
+   */
+  published: boolean;
   /** 일이 끝났는지 — 선명 vs 흐림 */
   merged: boolean;
   /** YYYY-MM. "2026년 7월생 별". 일 단위는 회사 일정과 대조 가능해 버린다 */
@@ -81,7 +86,7 @@ export function starCells(mag: Magnitude): [number, number][] {
 
 /** 별 색온도 — 실제 별처럼 청백~주황. **장식이다**(등급이 아니다) */
 export const STAR_TEMPS = ["#cfe4ff", "#edf2f7", "#ffeccc", "#ffc98a", "#ffb347"];
-/** written 전용 — 이것만 색이 데이터다 */
+/** published 전용 — 이것만 색이 데이터다 */
 export const WATER = "#7fd4e8";
 
 /** 결정론적 난수 — 같은 스냅샷이면 언제 봐도 같은 하늘 */
@@ -105,7 +110,7 @@ export function hashSeed(str: string): number {
 
 /* ────────────────────────────────────────────────────────────
    목업 — 1단계는 실데이터를 한 번도 건드리지 않는다.
-   규모만 실제와 맞춘다(2026-09-21 원장: run 77 · chain 20 · written 10).
+   규모만 실제와 맞춘다(2026-09-22 원장: run 163 · chain 24 · 발행 1).
    ──────────────────────────────────────────────────────────── */
 
 /** 이름 초안 — 분야 수준까지만. 제휴사·구체 기능명은 넣지 않는다 */
@@ -125,7 +130,7 @@ export function mockSnapshot(): ObservatorySnapshot {
       id: `s${i.toString(36)}${Math.floor(r() * 1296).toString(36)}`,
       // 상위 5%만 광도 5 — 등급이 흔하면 등급이 아니다
       magnitude: (roll > 0.95 ? 5 : (1 + Math.floor(roll * 4))) as Magnitude,
-      written: i < 10,
+      published: i < 1,
       merged: r() > 0.22,
       born: months[Math.floor(r() * months.length)],
       glyph: String.fromCharCode(0x4e00 + Math.floor(r() * 2000)),
@@ -133,7 +138,7 @@ export function mockSnapshot(): ObservatorySnapshot {
   }
 
   const constellations: Constellation[] = [];
-  let cursor = 10; // written 은 하늘을 떠났으므로 별자리 구성에서 제외
+  let cursor = 1; // 발행된 별은 하늘을 떠났으므로 별자리 구성에서 제외
   for (let c = 0; c < 20 && cursor < stars.length; c++) {
     const size = 2 + Math.floor(r() * 3); // 최소 2 — 혼자면 선이 없어 별자리가 아니다
     const members = stars.slice(cursor, cursor + size).map((s) => s.id);

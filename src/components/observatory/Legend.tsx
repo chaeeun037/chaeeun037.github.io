@@ -98,7 +98,7 @@ export default function Legend() {
                 <Mini mag={3} color={WATER} tail />
                 <div>
                   <strong>물빛 + 꼬리</strong>
-                  <span>이미 글이 된 기록. 유성이 되어 물로 내려갑니다</span>
+                  <span>블로그에 발행된 기록. 유성이 되어 물로 내려갑니다</span>
                 </div>
               </li>
               <li>

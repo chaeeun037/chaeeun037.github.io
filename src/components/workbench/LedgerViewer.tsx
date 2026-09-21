@@ -171,7 +171,8 @@ export default function LedgerViewer({
                   <button onClick={() => openRun(member)} className="flex w-full items-center justify-between gap-3 py-2 text-left hover:bg-gray-50 dark:hover:bg-gray-900">
                     <span className="flex items-center gap-2">
                       {member.title}
-                      {member.written && <Badge tone="green">발행됨</Badge>}
+                      {/* 원장 written = "이미 글로 정리됨"(포폴 노트 포함). 블로그 발행과 다른 축이다 */}
+                      {member.written && <Badge tone="green">정리됨</Badge>}
                     </span>
                     <Score value={member.score} />
                   </button>

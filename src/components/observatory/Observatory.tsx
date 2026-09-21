@@ -79,7 +79,7 @@ export default function Observatory() {
   }
 
   const { snapshot, source } = state;
-  const written = snapshot.stars.filter((s) => s.written).length;
+  const published = snapshot.stars.filter((s) => s.published).length;
 
   return (
     <>
@@ -92,10 +92,10 @@ export default function Observatory() {
       <div className="obs-meta">
         <span>별 {snapshot.stars.length}</span>
         <span>별자리 {snapshot.constellations.length}</span>
-        <span>글이 됨 {written}</span>
+        <span>발행됨 {published}</span>
         <span className="obs-legend">
           모양·크기 = 파고든 깊이 ·{" "}
-          <em style={{ color: "var(--c-shallow)" }}>유성</em> = 글이 됨 · 흐림 = 진행 중
+          <em style={{ color: "var(--c-shallow)" }}>유성</em> = 발행됨 · 흐림 = 진행 중
         </span>
       </div>
 
