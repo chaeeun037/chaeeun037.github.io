@@ -54,11 +54,18 @@ export default function Home() {
           </p>
         ) : (
           <section id="all-posts" className="scroll-mt-20">
-            {featured.length > 0 && (
-              <h2 className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--t-muted)]">
-                모든 기록
-              </h2>
-            )}
+            <div className="flex flex-wrap items-baseline justify-between gap-2">
+              {featured.length > 0 && (
+                <h2 className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--t-muted)]">
+                  모든 기록
+                </h2>
+              )}
+              {/* sec-note (핸드오프 §4-6) — 뱃지만 보고는 기준을 알 수 없으니 정의로 가는 길을 둔다.
+                  대표 기록이 없어도 목록엔 뱃지가 붙으므로 이 링크는 항상 보인다. */}
+              <Link href="/depth" className="zb-link ml-auto text-xs">
+                깊이 기준이 궁금하다면?
+              </Link>
+            </div>
             <ul className="divide-y divide-[var(--line)]">
               {posts.map((post) => (
                 <PostListItem key={post.slug} post={post} />
