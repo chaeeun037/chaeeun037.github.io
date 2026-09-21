@@ -26,6 +26,10 @@ jobs:
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm build
+        env:
+          # 관측소 스냅샷(공개 Gist). 공개물이라 secret 이 아니고, 여기 적혀 있어야
+          # 어느 하늘을 보고 있는지 리뷰에서 읽힌다. 갱신은 harness `build-snapshot.mjs --publish`.
+          NEXT_PUBLIC_OBSERVATORY_SNAPSHOT_URL: https://gist.githubusercontent.com/chaeeun037/1fdfc6c8a60f3399106bf194e705e085/raw/observatory-snapshot.json
       - uses: actions/upload-pages-artifact@v3
         with:
           path: out
