@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import DepthBadge from "@/components/DepthBadge";
 import PostListItem from "@/components/PostListItem";
@@ -48,10 +49,27 @@ export default function Home() {
           </section>
         )}
 
+        {/* 빈 상태 — 텅 빈 캠프사이트(#29). 불 꺼진 자리라는 게 읽히도록
+            모닥불이 아니라 텐트만 두고, 문구도 "없음"이 아니라 "아직"으로 쓴다. */}
         {posts.length === 0 ? (
-          <p className="py-20 text-center text-[var(--t-muted)]">
-            아직 발행된 글이 없습니다.
-          </p>
+          <div className="flex flex-col items-center gap-4 py-20 text-center">
+            <Image
+              src="/pixel/land-tent-64x48.png"
+              width={64}
+              height={48}
+              alt=""
+              className="px-art opacity-60"
+              unoptimized
+            />
+            <div>
+              <p className="font-semibold text-[var(--t-secondary)]">
+                아직 캠프가 비어 있습니다
+              </p>
+              <p className="mt-1 text-sm text-[var(--t-muted)]">
+                첫 기록을 준비하는 중입니다.
+              </p>
+            </div>
+          </div>
         ) : (
           <section id="all-posts" className="scroll-mt-20">
             <div className="flex flex-wrap items-baseline justify-between gap-2">
