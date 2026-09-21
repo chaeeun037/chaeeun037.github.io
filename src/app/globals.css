@@ -710,3 +710,185 @@ body { overflow-x: hidden; }
   color: var(--t-muted);
   opacity: 0.75;
 }
+
+/* ──────────────────────────────────────────────────────────
+   관측소 (WB-1b / #31)
+   ────────────────────────────────────────────────────────── */
+.obs-sky {
+  position: relative;
+  height: min(62vh, 560px);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.obs-sky canvas,
+.obs-sky svg {
+  position: absolute;
+  inset: 0;
+}
+.obs-cons line {
+  stroke: #8fb6d9;
+  stroke-opacity: 0.22;
+  stroke-width: 1;
+  transition: stroke-opacity 0.15s;
+}
+.obs-cons:hover line {
+  stroke-opacity: 0.55;
+}
+.obs-sky g {
+  cursor: default;
+}
+
+.obs-tip {
+  position: absolute;
+  z-index: 5;
+  pointer-events: none;
+  background: color-mix(in srgb, var(--c-deeper) 92%, transparent);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 8px 11px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  max-width: 220px;
+}
+.obs-tip strong {
+  font-size: 13px;
+  color: var(--t-primary);
+}
+.obs-tip span {
+  font-size: 11px;
+  color: var(--t-muted);
+  font-variant-numeric: tabular-nums;
+}
+/* 글리프는 원본이 없는 기호 — 제목 자리를 채우되 읽히지는 않는다 */
+.obs-glyph {
+  font-family: var(--font-pixel);
+  font-size: 18px !important;
+  letter-spacing: 0.1em;
+}
+
+.obs-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  margin-top: 10px;
+  font-size: 11.5px;
+  color: var(--t-muted);
+  font-variant-numeric: tabular-nums;
+}
+.obs-legend {
+  margin-left: auto;
+}
+.obs-legend em {
+  font-style: normal;
+}
+
+/* ── 히어로 티저 — 하늘 너머로 비치는 별 ──
+   우주는 낮/밤과 무관하므로 낮 하늘에 희미하게 비쳐도 모순이 아니다.
+   수는 빌드 타임 상수 하나만 쓴다 — 홈에서 스냅샷을 fetch하면 LCP 비용이 되돌아온다. */
+.sky-teaser {
+  position: absolute;
+  right: 0;
+  top: 96px;
+  /* 낮 하늘에서는 별이 배경에 묻힌다 — 흰색 대신 라벨과 같은 어두운 색을 쓰고
+     투명도로 "멀리 있음"을 준다(첫 렌더에서 흰 별이 안 보이는 것을 확인). */
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0.62;
+  transition: opacity 0.2s;
+}
+.sky-teaser:hover {
+  opacity: 1;
+}
+.sky-teaser:focus-visible {
+  outline: 2px solid var(--c-campfire-shadow);
+  outline-offset: 4px;
+}
+.sky-teaser .count {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--t-on-sky);
+}
+@media (max-width: 680px) {
+  .sky-teaser { position: static; margin-bottom: 10px; opacity: 0.85; }
+}
+
+/* 범례 (?) — 하늘 위에 상시 띄우면 시야를 가리고, 페이지를 나누면 하늘을 떠나야 한다 */
+.obs-stage { position: relative; }
+.obs-help {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  z-index: 4;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: color-mix(in srgb, var(--c-deeper) 80%, transparent);
+  color: var(--t-secondary);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+}
+.obs-help:hover { color: var(--c-accent); border-color: var(--c-accent); }
+.obs-help:focus-visible { outline: 2px solid var(--c-accent); outline-offset: 2px; }
+
+.obs-modal-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  background: rgba(3, 8, 14, 0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+}
+.obs-modal {
+  position: relative;
+  max-width: 520px;
+  width: 100%;
+  max-height: 86vh;
+  overflow-y: auto;
+  background: var(--c-deeper);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 26px 28px 30px;
+}
+.obs-modal h2 { font-size: 19px; margin: 0 0 8px; color: var(--t-primary); }
+.obs-modal h3 {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--t-muted);
+  margin: 24px 0 10px;
+}
+.obs-modal .lead { color: var(--t-secondary); font-size: 14px; margin: 0; }
+.obs-modal .note { color: var(--t-muted); font-size: 13px; margin: 10px 0 0; line-height: 1.6; }
+.obs-modal .note strong { color: var(--t-secondary); }
+.obs-close {
+  position: absolute;
+  right: 14px;
+  top: 12px;
+  background: none;
+  border: 0;
+  color: var(--t-muted);
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+}
+.obs-close:hover { color: var(--t-primary); }
+
+.obs-modal .mags { display: flex; gap: 6px; align-items: center; }
+.obs-modal .mags > div { text-align: center; flex: 1; }
+.obs-modal .mags span { display: block; font-size: 11px; color: var(--t-muted); }
+
+.obs-modal .states { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
+.obs-modal .states li { display: flex; gap: 12px; align-items: center; }
+.obs-modal .states strong { display: block; font-size: 13px; color: var(--t-primary); }
+.obs-modal .states span { font-size: 12.5px; color: var(--t-muted); line-height: 1.5; }
+.obs-modal .dim { opacity: 0.42; }
+.obs-modal .temps { display: flex; gap: 3px; width: 34px; flex-wrap: wrap; }
+.obs-modal .temps i { width: 14px; height: 14px; border-radius: 2px; }
