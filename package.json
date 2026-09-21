@@ -7,7 +7,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "pixel": "node scripts/pixel-pipeline/process.mjs",
+    "pixel:palette": "node scripts/pixel-pipeline/extract-palette.mjs"
   },
   "dependencies": {
     "gray-matter": "^4.0.3",
@@ -30,6 +32,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.10",
+    "sharp": "^0.35.4",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

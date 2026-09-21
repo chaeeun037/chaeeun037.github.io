@@ -1,0 +1,53 @@
+{
+  "palette": "expedition-log-v1",
+  "generated": [
+    {
+      "source": "campfire.png",
+      "out": "land-campfire-57x48.png",
+      "from": "564×471",
+      "to": "57×48"
+    },
+    {
+      "source": "clouds-set-of-3.png",
+      "out": "sky-cloud-1-74x32.png",
+      "from": "599×259",
+      "to": "74×32"
+    },
+    {
+      "source": "clouds-set-of-3.png",
+      "out": "sky-cloud-2-55x32.png",
+      "from": "470×271",
+      "to": "55×32"
+    },
+    {
+      "source": "clouds-set-of-3.png",
+      "out": "sky-cloud-3-48x32.png",
+      "from": "248×165",
+      "to": "48×32"
+    },
+    {
+      "source": "lantern-cross-sparkles.png",
+      "out": "land-lantern-sparkle-58x64.png",
+      "from": "432×475",
+      "to": "58×64"
+    },
+    {
+      "source": "lantern-cross.png",
+      "out": "land-lantern-40x64.png",
+      "from": "294×476",
+      "to": "40×64"
+    },
+    {
+      "source": "lantern-glow.png",
+      "out": "land-lantern-glow-40x64.png",
+      "from": "294×476",
+      "to": "40×64"
+    },
+    {
+      "source": "tent.png",
+      "out": "land-tent-64x48.png",
+      "from": "564×422",
+      "to": "64×48"
+    }
+  ]
+}
