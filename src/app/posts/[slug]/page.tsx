@@ -25,6 +25,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: post.description,
       url: `/posts/${post.slug}/`,
       publishedTime: `${post.date}T00:00:00+09:00`,
+      ...(post.updated ? { modifiedTime: `${post.updated}T00:00:00+09:00` } : {}),
       tags: post.tags,
     },
   };
@@ -46,6 +47,15 @@ export default async function PostPage({ params }: Props) {
             {post.date}
           </time>
           {post.depth && <DepthBadge depth={post.depth} />}
+          {/* 경험 시점은 발행일과 경쟁하지 않게 더 흐리게 — 찾는 사람만 보면 되는 정보다 */}
+          {post.experiencedAt && (
+            <span className="meta-faint" title="이 글이 다루는 경험의 시점">
+              {post.experiencedAt.replace("-", "년 ")}월의 기록
+            </span>
+          )}
+          {post.updated && post.updated !== post.date && (
+            <span className="meta-faint">{post.updated} 수정</span>
+          )}
           {post.series && <span>· {post.series}</span>}
           {post.tags.map((tag) => (
             <span key={tag}>#{tag}</span>
