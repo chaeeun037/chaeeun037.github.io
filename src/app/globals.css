@@ -75,7 +75,9 @@ body {
 .charsheet .wrap {
   max-width: 1040px;
   margin: 0 auto;
-  padding: 0 24px;
+  /* `padding` 축약을 쓰면 세로 padding 까지 0 으로 덮어써서 헤더·푸터의 py-* 유틸이 죽는다
+     (2026-09-22 헤더 높이가 무너짐). 가로만 지정한다. */
+  padding-inline: 24px;
 }
 
 /* 자리표시자(아바타·픽셀 마크 등 미확정 에셋) */
@@ -439,17 +441,20 @@ body {
    시안: design/mockup-A6-final-polish.html + 핸드오프 §3·§4
    ────────────────────────────────────────────────────────── */
 
+/* 수직 세계관 — 하늘 → 육지 → 물.
+   핸드오프 §3 은 고정 px 스톱(290/720)을 제시하면서 **"Next.js 구현 시 콘텐츠 높이에 맞춰 조정하거나
+   섹션별 배경 분리 + 종점 100% 규칙 유지"** 를 함께 적어뒀다. 후자를 택했다 —
+   고정 스톱으로 깔아보니 육지 끝에 빈 띠가 100px 남았고, 콘텐츠가 늘면 반대로 잘린다.
+   섹션마다 제 배경을 지면 **경계는 자동으로 하드 엣지**가 되고 높이는 콘텐츠를 따라간다. */
+/* 공통 프레임 — 헤더·푸터·히어로·관측소가 같은 폭을 쓴다(시안 --maxw).
+   읽기 열(목록·상세·깊이 기준)은 별도로 좁게 둔다 — 긴 글은 좁아야 읽힌다.
+   `.charsheet .wrap`(About 전용)과 **다른 선택자**다 — 한쪽만 고치면 다른 쪽이 안 바뀐다. */
 .wrap {
   max-width: 1040px;
   margin: 0 auto;
   padding: 0 24px;
 }
 
-/* 수직 세계관 — 하늘 → 육지 → 물.
-   핸드오프 §3 은 고정 px 스톱(290/720)을 제시하면서 **"Next.js 구현 시 콘텐츠 높이에 맞춰 조정하거나
-   섹션별 배경 분리 + 종점 100% 규칙 유지"** 를 함께 적어뒀다. 후자를 택했다 —
-   고정 스톱으로 깔아보니 육지 끝에 빈 띠가 100px 남았고, 콘텐츠가 늘면 반대로 잘린다.
-   섹션마다 제 배경을 지면 **경계는 자동으로 하드 엣지**가 되고 높이는 콘텐츠를 따라간다. */
 .hero-sky { background: var(--c-sky); }
 .hero-meadow { background: var(--c-meadow); }
 /* 물 안에서만 그라데이션. 종점이 --c-deep = 페이지 배경이라 높이와 무관하게 이음새가 없다 */
@@ -716,7 +721,7 @@ body { overflow-x: hidden; }
    ────────────────────────────────────────────────────────── */
 .obs-sky {
   position: relative;
-  height: min(62vh, 560px);
+  height: min(62vh, 520px);
   border: 1px solid var(--line);
   border-radius: 10px;
   overflow: hidden;
@@ -824,6 +829,12 @@ body { overflow-x: hidden; }
   z-index: 4;
   width: 26px;
   height: 26px;
+  /* 버튼 기본 padding 을 안 지우면 26px 안에서 글자가 밀려 잘린다 */
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
   border-radius: 50%;
   border: 1px solid var(--line);
   background: color-mix(in srgb, var(--c-deeper) 80%, transparent);
