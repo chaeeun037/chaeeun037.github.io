@@ -12,7 +12,7 @@ import {
   type Star,
 } from "@/lib/observatory";
 
-type Placed = Star & { x: number; y: number; z: number; color: string };
+type Placed = Star & { x: number; y: number; z: number; color: string; order: number };
 
 const UNIT: Record<number, number> = { 1: 1.6, 2: 1.5, 3: 1.7, 4: 1.8, 5: 1.9 };
 
@@ -23,7 +23,11 @@ const UNIT: Record<number, number> = { 1: 1.6, 2: 1.5, 3: 1.7, 4: 1.8, 5: 1.9 };
 export default function Sky({ snapshot }: { snapshot: ObservatorySnapshot }) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [size, setSize] = useState({ w: 1000, h: 560 });
+  // 0 으로 시작해야 서버 렌더와 첫 클라이언트 렌더가 같다.
+  // 임의의 초기값(1000×560)을 주면 서버가 그 크기로 svg 를 그리고 클라이언트는 실측값으로 그려
+  // 속성이 어긋난다 — hydration mismatch 경고의 원인이었다.
+  const [size, setSize] = useState({ w: 0, h: 0 });
+  const ready = size.w > 0 && size.h > 0;
   const [hover, setHover] = useState<
     | { kind: "star"; data: Placed; x: number; y: number }
     | { kind: "cons"; data: Constellation; x: number; y: number }
@@ -51,6 +55,7 @@ export default function Sky({ snapshot }: { snapshot: ObservatorySnapshot }) {
       const y = s.written ? h - 72 - r() * 52 : 36 + r() * Math.max(1, h - 160);
       const p: Placed = {
         ...s,
+        order: 0,
         x,
         y,
         z: 0.45 + r() * 0.55,
@@ -74,6 +79,11 @@ export default function Sky({ snapshot }: { snapshot: ObservatorySnapshot }) {
         p.y = Math.max(26, Math.min(h - 130, cy + Math.sin(ang) * rad));
       }
     }
+    // 등장 순서 — 밝은 별부터. 실제로 밤하늘에 눈이 적응하는 순서와 같아 자연스럽다.
+    const order = [...placed].sort((a, b) => b.magnitude - a.magnitude);
+    order.forEach((p, i) => {
+      p.order = i;
+    });
     return { placed, byId };
   }, [snapshot, size]);
 
@@ -147,7 +157,10 @@ export default function Sky({ snapshot }: { snapshot: ObservatorySnapshot }) {
   return (
     <div ref={wrapRef} className="obs-sky">
       <canvas ref={canvasRef} style={{ width: "100%", height: "100%" }} />
-      <svg width={size.w} height={size.h} role="img" aria-label={`별 ${snapshot.stars.length}개, 별자리 ${snapshot.constellations.length}개`}>
+      <svg
+        width={ready ? size.w : undefined}
+        height={ready ? size.h : undefined}
+        role="img" aria-label={`별 ${snapshot.stars.length}개, 별자리 ${snapshot.constellations.length}개`}>
         <defs>
           {[...STAR_TEMPS, WATER].map((c, i) => (
             <radialGradient key={c} id={`halo${i}`}>
@@ -158,7 +171,7 @@ export default function Sky({ snapshot }: { snapshot: ObservatorySnapshot }) {
           ))}
         </defs>
 
-        {lines.map(({ c, pts }) => (
+        {ready && lines.map(({ c, pts }, ci) => (
           <g
             key={c.id}
             className="obs-cons"
@@ -172,6 +185,9 @@ export default function Sky({ snapshot }: { snapshot: ObservatorySnapshot }) {
                 y1={p.y}
                 x2={pts[i + 1].x}
                 y2={pts[i + 1].y}
+                pathLength={1}
+                className="cons-draw"
+                style={{ animationDelay: `${1150 + ci * 70 + i * 40}ms` }}
                 shapeRendering="crispEdges"
               />
             ))}
@@ -183,14 +199,13 @@ export default function Sky({ snapshot }: { snapshot: ObservatorySnapshot }) {
                 y1={p.y}
                 x2={pts[i + 1].x}
                 y2={pts[i + 1].y}
-                stroke="transparent"
-                strokeWidth="12"
+                className="cons-hit"
               />
             ))}
           </g>
         ))}
 
-        {placed.map((s) => {
+        {ready && placed.map((s) => {
           const u = UNIT[s.magnitude];
           const haloIdx = s.written ? STAR_TEMPS.length : STAR_TEMPS.indexOf(s.color);
           return (
@@ -201,6 +216,7 @@ export default function Sky({ snapshot }: { snapshot: ObservatorySnapshot }) {
               onMouseEnter={() => setHover({ kind: "star", data: s, x: s.x, y: s.y })}
               onMouseLeave={() => setHover(null)}
             >
+              <g className="star-in" style={{ animationDelay: `${s.order * 14}ms` }}>
               {s.merged && s.magnitude >= 2 && (
                 <circle r={u * (s.magnitude + 2) * 1.8} fill={`url(#halo${haloIdx})`} />
               )}
@@ -248,6 +264,7 @@ export default function Sky({ snapshot }: { snapshot: ObservatorySnapshot }) {
                   shapeRendering="crispEdges"
                 />
               ))}
+              </g>
               <circle r={Math.max(10, u * 4)} fill="transparent" />
             </g>
           );
