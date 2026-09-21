@@ -456,7 +456,21 @@ body {
   padding-inline: 24px;
 }
 
-.hero-sky { background: var(--c-sky); }
+.hero-sky {
+  /* 단색이면 밋밋하다. 실제 하늘처럼 위가 진하고 지평선 쪽이 옅어진다 */
+  background: linear-gradient(
+    180deg,
+    color-mix(in srgb, var(--c-sky) 82%, var(--c-mid-water)) 0%,
+    var(--c-sky) 62%,
+    color-mix(in srgb, var(--c-sky) 88%, #ffffff) 100%
+  );
+  position: relative;
+  overflow: hidden;
+}
+
+/* 배경 구름 — 클릭 대상이 아니라 깊이를 만드는 층. 앞 구름보다 흐리고 작다 */
+
+
 .hero-meadow { background: var(--c-meadow); }
 /* 물 안에서만 그라데이션. 종점이 --c-deep = 페이지 배경이라 높이와 무관하게 이음새가 없다 */
 .hero-water {
@@ -475,31 +489,10 @@ body {
   min-height: 290px;
 }
 .sky-wrap { position: relative; }
-.sky-clouds {
-  position: absolute;
-  right: 0;
-  top: 4px;
-  display: flex;
-  align-items: flex-start;
-  gap: 26px;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-}
-.cloud-link { transition: transform 0.15s, filter 0.15s; }
 .cloud-link:hover { transform: translateY(-2px); filter: brightness(1.08); }
 .cloud-link:focus-visible { outline: 2px solid var(--c-campfire-shadow); outline-offset: 4px; }
-.cloud-1 { margin-top: 26px; }
 .cloud-2 { margin-top: 6px; }
 .cloud-3 { margin-top: 40px; }
-.sky-lbl {
-  flex-basis: 100%;
-  text-align: right;
-  margin-top: 6px;
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--t-on-sky);
-  opacity: 0.75;
-}
 @media (max-width: 900px) {
   .sky-clouds { gap: 14px; transform: scale(0.78); transform-origin: top right; }
 }
@@ -526,7 +519,7 @@ body {
 }
 
 /* ── 육지 ── */
-.hero-meadow { padding: 34px 0 40px; }
+.hero-meadow { padding: 34px 0 40px; position: relative; }
 .meadow-top {
   display: flex;
   align-items: flex-start;
@@ -801,120 +794,194 @@ body { overflow-x: hidden; }
   font-style: normal;
 }
 
-/* ── 히어로 티저 — 하늘 너머로 비치는 별 ──
-   우주는 낮/밤과 무관하므로 낮 하늘에 희미하게 비쳐도 모순이 아니다.
-   수는 빌드 타임 상수 하나만 쓴다 — 홈에서 스냅샷을 fetch하면 LCP 비용이 되돌아온다. */
-.sky-teaser {
+/* ── 구름 — 전부 CSS ──
+   픽셀 png 구름과 배경 구름이 톤이 달라 따로 놀았다. 한 가지 방식으로 통일한다.
+   둥근 본체 + box-shadow 로 뭉게뭉게를 만든다. 크기·투명도로 원근을 준다. */
+.clouds { position: absolute; inset: 0; pointer-events: none; }
+.clouds i {
   position: absolute;
-  right: 0;
-  top: 96px;
-  /* 낮 하늘에서는 별이 배경에 묻힌다 — 흰색 대신 라벨과 같은 어두운 색을 쓰고
-     투명도로 "멀리 있음"을 준다(첫 렌더에서 흰 별이 안 보이는 것을 확인). */
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  display: block;
+  background: #ffffff;
+  border-radius: 999px;
+}
+.clouds .c1 {
+  width: 104px; height: 24px; right: 14%; top: 22%;
+  opacity: 0.92;
+  box-shadow: -34px -11px 0 -3px #fff, -70px 3px 0 -6px #fff, 22px -6px 0 -5px #fff;
+}
+.clouds .c2 {
+  width: 76px; height: 18px; right: 30%; top: 46%;
   opacity: 0.62;
-  transition: opacity 0.2s;
+  box-shadow: -26px -8px 0 -3px #fff, 18px 2px 0 -5px #fff;
 }
-.sky-teaser:hover {
-  opacity: 1;
+.clouds .c3 {
+  width: 120px; height: 26px; right: 4%; top: 62%;
+  opacity: 0.45;
+  box-shadow: -40px -12px 0 -4px #fff, -84px 2px 0 -8px #fff;
 }
-.sky-teaser:focus-visible {
-  outline: 2px solid var(--c-campfire-shadow);
-  outline-offset: 4px;
+.clouds .c4 {
+  width: 62px; height: 15px; right: 46%; top: 14%;
+  opacity: 0.34;
+  box-shadow: -20px -6px 0 -3px #fff;
 }
-.sky-teaser .count {
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--t-on-sky);
+.clouds .c5 {
+  width: 88px; height: 20px; right: 22%; top: 76%;
+  opacity: 0.26;
+  box-shadow: -30px -9px 0 -4px #fff, 20px 2px 0 -6px #fff;
 }
-@media (max-width: 680px) {
-  .sky-teaser { position: static; margin-bottom: 10px; opacity: 0.85; }
+/* 왼쪽에도 둔다. 단 **타이틀 위아래로만** — 처음엔 세로 중앙에 깔았다가
+   "깊이 파고든" 위로 겹쳐 글자가 안 읽혔다(2026-09-22). */
+.clouds .c6 {
+  width: 86px; height: 20px; left: 5%; top: 6%;
+  opacity: 0.5;
+  box-shadow: 28px -8px 0 -3px #fff, 58px 3px 0 -6px #fff;
+}
+.clouds .c7 {
+  width: 64px; height: 15px; left: 24%; top: 90%;
+  opacity: 0.34;
+  box-shadow: 22px -6px 0 -3px #fff;
+}
+.clouds .c8 {
+  width: 104px; height: 23px; left: 3%; top: 82%;
+  opacity: 0.26;
+  box-shadow: 34px -10px 0 -4px #fff, 72px 2px 0 -7px #fff;
 }
 
-/* 범례 (?) — 하늘 위에 상시 띄우면 시야를 가리고, 페이지를 나누면 하늘을 떠나야 한다 */
-.obs-stage { position: relative; }
-.obs-help {
+@media (max-width: 680px) {
+  .clouds .c2, .clouds .c4, .clouds .c7 { display: none; }
+}
+
+/* ── 관측소 진입: 로켓 ──
+   하늘과 육지 경계에 세워 "땅에서 쏘아 올려 우주로 간다"를 보인다.
+   별 티저를 버린 이유: 낮 하늘의 어두운 별은 빛나는 게 아니라 티끌로 보였고,
+   무엇을 누르라는 건지 읽히지 않았다. 로켓은 행동이 분명하다(2026-09-22). */
+.launchpad {
   position: absolute;
-  right: 12px;
-  top: 12px;
-  z-index: 4;
-  width: 26px;
-  height: 26px;
-  /* 버튼 기본 padding 을 안 지우면 26px 안에서 글자가 밀려 잘린다 */
-  padding: 0;
+  /* 오른쪽 끝에 세우니 텐트·랜턴까지 한쪽에 몰려 우측이 무거웠다 —
+     모닥불과 지름길 사이 빈 자리로 옮긴다. 기준선은 콘텐츠 왼쪽 가장자리 */
+  left: calc(max(24px, (100vw - 1040px) / 2 + 24px) + 36%);
+  /* 나로호는 112px 다 — 엔진이 지면 살짝 아래에 묻히도록 올려 세운다 */
+  top: -106px;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 1;
-  border-radius: 50%;
-  border: 1px solid var(--line);
-  background: color-mix(in srgb, var(--c-deeper) 80%, transparent);
-  color: var(--t-secondary);
+  /* 문구는 로켓 발치에. 가운데 정렬하면 문구가 하늘에 뜬다 */
+  align-items: flex-end;
+  gap: 10px;
+  padding-bottom: 4px;
+  text-decoration: none;
+  z-index: 3;
+}
+
+/* 로켓 — 픽셀 에셋. 다른 로켓으로 바꾸려면 assets-raw/rocket.png 교체 후 `pnpm pixel` */
+.rocket {
+  position: relative;
+  display: block;
+  transition: transform 0.28s cubic-bezier(0.2, 0.7, 0.3, 1);
+}
+
+/* 분사 불꽃 — 호버·발사에서만 보인다. 픽셀 에셋에 맞춰 몸체 아래에 붙는다 */
+.flame {
+  position: absolute;
+  /* 좌우를 같은 값으로 물려 13px 동체 한가운데에 정확히 앉힌다(반픽셀 margin 회피) */
+  left: 2px; right: 2px;
+  bottom: -12px;
+  height: 12px;
+  background: #fff3c4;
+  opacity: 0;
+  /* 노즐에서 아래로만 뻗는다 — 기본 원점(가운데)이면 위아래로 같이 자라 동체를 먹는다 */
+  transform-origin: 50% 0;
+  transform: scaleY(0.25);
+  transition: opacity 0.15s, transform 0.15s;
+}
+/* 픽셀 아트엔 곡선이 없다 — 폭을 9→7→5→3으로 한 단씩 좁혀 화염을 만든다.
+   가운데가 가장 넓으면 불꽃이 아니라 막대로 보인다 */
+.flame::before {
+  content: "";
+  position: absolute;
+  left: 1px; right: 1px; top: 100%;
+  height: 14px;
+  background: #ffc94a;
+}
+.flame::after {
+  content: "";
+  position: absolute;
+  left: 2px; right: 2px; top: calc(100% + 14px);
+  height: 10px;
+  background: #ff8a3c;
+  /* 끝단 — 요소를 하나 더 두는 대신 spread 로 2px 좁힌 그림자를 쓴다 */
+  box-shadow: 0 10px 0 -1px #ff6a2b;
+}
+/* 화염이 뻗는 만큼 로켓을 띄운다 — 안 띄우면 불꽃이 풀밭 위에 얹혀 땅에서 불이 난 모양이 된다 */
+.launchpad:hover .rocket { transform: translateY(-40px); }
+.launchpad:hover .flame { opacity: 0.9; transform: scaleY(1); }
+.launchpad:focus-visible { outline: 2px solid var(--c-campfire-shadow); outline-offset: 6px; }
+
+/* 문구 — 한 줄로 늘어지면 라벨이 아니라 문장으로 읽힌다. 이름과 설명을 층으로 나눈다 */
+/* 로켓 발치는 곧 경계선이라, 거기 맞추면 문구가 하늘에 걸려 흐려진다.
+   텐트·랜턴 라벨과 같이 풀밭 위로 끌어내린다 */
+.launch-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  line-height: 1.3;
+  margin-bottom: -34px;
+}
+.launch-text strong {
   font-size: 13px;
   font-weight: 700;
-  cursor: pointer;
-  transition: color 0.15s, border-color 0.15s;
+  color: var(--t-on-land);
+  background: rgba(255, 255, 255, 0.4);
+  padding: 1px 7px;
 }
-.obs-help:hover { color: var(--c-accent); border-color: var(--c-accent); }
-.obs-help:focus-visible { outline: 2px solid var(--c-accent); outline-offset: 2px; }
+/* 육지 초록에 그냥 얹으면 묻힌다 — 흰 바탕을 깔아 둘 다 읽히게 한다 */
+.launch-text em {
+  font-style: normal;
+  font-size: 11px;
+  color: var(--t-on-land);
+  background: rgba(255, 255, 255, 0.34);
+  padding: 1px 7px;
+  align-self: flex-start;
+  font-variant-numeric: tabular-nums;
+}
 
-.obs-modal-bg {
-  position: fixed;
-  inset: 0;
-  z-index: 50;
-  background: rgba(3, 8, 14, 0.72);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
+/* 발사 — 위로 날아간 뒤 페이지가 바뀐다 */
+@keyframes liftoff {
+  /* 0~45%: 부들부들. 픽셀 아트라 흔들림도 1px 단위로 끊는다(steps(1) = 보간 없음) */
+  0%   { transform: translate(0, -40px);    opacity: 1; animation-timing-function: steps(1); }
+  6%   { transform: translate(-1px, -38px);             animation-timing-function: steps(1); }
+  12%  { transform: translate(1px, -41px);              animation-timing-function: steps(1); }
+  18%  { transform: translate(-1px, -37px);             animation-timing-function: steps(1); }
+  24%  { transform: translate(1px, -40px);              animation-timing-function: steps(1); }
+  30%  { transform: translate(-1px, -38px);             animation-timing-function: steps(1); }
+  36%  { transform: translate(1px, -41px);              animation-timing-function: steps(1); }
+  /* 45%: 주저앉았다가 */
+  45%  { transform: translate(0, -34px) scale(1); opacity: 1;
+         animation-timing-function: cubic-bezier(0.55, 0, 0.85, 0.4); }
+  /* 끝까지 불투명하게 두고 마지막에만 지운다 — 일찍 흐려지면 날아간 게 아니라 녹아 없어진 것처럼 보인다 */
+  88%  { transform: translate(0, -190px) scale(0.86); opacity: 1; }
+  100% { transform: translate(0, -340px) scale(0.72); opacity: 0; }
 }
-.obs-modal {
-  position: relative;
-  max-width: 520px;
-  width: 100%;
-  max-height: 86vh;
-  overflow-y: auto;
-  background: var(--c-deeper);
-  border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 26px 28px 30px;
+.launchpad.is-launching .rocket {
+  animation: liftoff 720ms linear forwards;
 }
-.obs-modal h2 { font-size: 19px; margin: 0 0 8px; color: var(--t-primary); }
-.obs-modal h3 {
-  font-size: 12px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--t-muted);
-  margin: 24px 0 10px;
+/* 길게 늘이면 꼬리가 100px 가까이 되어 과장돼 보인다 — 길이는 두고 "푸쉬식" 떨림으로 힘을 낸다.
+   steps(1) 이라 보간 없이 툭툭 끊긴다(픽셀 아트에 맞다) */
+.launchpad.is-launching .flame {
+  opacity: 1;
+  animation: sputter 90ms steps(1) infinite;
 }
-.obs-modal .lead { color: var(--t-secondary); font-size: 14px; margin: 0; }
-.obs-modal .note { color: var(--t-muted); font-size: 13px; margin: 10px 0 0; line-height: 1.6; }
-.obs-modal .note strong { color: var(--t-secondary); }
-.obs-close {
-  position: absolute;
-  right: 14px;
-  top: 12px;
-  background: none;
-  border: 0;
-  color: var(--t-muted);
-  font-size: 22px;
-  line-height: 1;
-  cursor: pointer;
+@keyframes sputter {
+  0%   { transform: scaleY(0.8); }
+  25%  { transform: scaleY(1.25); }
+  50%  { transform: scaleY(0.95); }
+  75%  { transform: scaleY(1.4); }
+  100% { transform: scaleY(1.05); }
 }
-.obs-close:hover { color: var(--t-primary); }
+.launchpad.is-launching .launch-text { opacity: 0; transition: opacity 0.2s; }
 
-.obs-modal .mags { display: flex; gap: 6px; align-items: center; }
-.obs-modal .mags > div { text-align: center; flex: 1; }
-.obs-modal .mags span { display: block; font-size: 11px; color: var(--t-muted); }
-
-.obs-modal .states { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
-.obs-modal .states li { display: flex; gap: 12px; align-items: center; }
-.obs-modal .states strong { display: block; font-size: 13px; color: var(--t-primary); }
-.obs-modal .states span { font-size: 12.5px; color: var(--t-muted); line-height: 1.5; }
-.obs-modal .dim { opacity: 0.42; }
-.obs-modal .temps { display: flex; gap: 3px; width: 34px; flex-wrap: wrap; }
-.obs-modal .temps i { width: 14px; height: 14px; border-radius: 2px; }
+@media (max-width: 680px) {
+  .launchpad { left: 52%; top: -96px; }
+  .launch-text em { display: none; }
+}
 
 /* ── 관측소 등장 애니메이션 ──
    배경(성운·먼지)은 정적이라 즉시 깔리고, 별만 하나씩 켜진다.

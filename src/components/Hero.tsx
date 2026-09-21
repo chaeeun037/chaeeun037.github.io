@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { TEASER_STAR_COUNT, starCells } from "@/lib/observatory";
+import RocketLaunch from "@/components/RocketLaunch";
 
 /**
  * 히어로 씬 (Zone A, #28) — 수직 세계관: 하늘 → 육지 → 물.
@@ -11,67 +11,24 @@ import { TEASER_STAR_COUNT, starCells } from "@/lib/observatory";
  * 미수령 에셋(캠핑장 씬·수중 씬)은 자리를 보이게 남긴다.
  */
 
-const CLOUDS = [
-  { src: "/pixel/sky-cloud-1-74x32.png", w: 74, h: 32, cls: "cloud-1" },
-  { src: "/pixel/sky-cloud-2-55x32.png", w: 55, h: 32, cls: "cloud-2" },
-  { src: "/pixel/sky-cloud-3-48x32.png", w: 48, h: 32, cls: "cloud-3" },
-];
-
 export default function Hero() {
   return (
     <div className="hero">
       {/* ── 하늘: 구름 3개가 전부 관측소 진입점 ── */}
       <div className="hero-sky">
+        {/* 구름 — 전부 CSS. 픽셀 png 구름은 뺐다(배경 구름과 톤이 달라 둘이 따로 놀았다).
+            로켓이 관측소 진입점이 되면서 구름은 순수 장식이 됐다. */}
+        <div className="clouds" aria-hidden="true">
+          <i className="c1" />
+          <i className="c2" />
+          <i className="c3" />
+          <i className="c4" />
+          <i className="c5" />
+          <i className="c6" />
+          <i className="c7" />
+          <i className="c8" />
+        </div>
         <div className="wrap sky-wrap">
-          <div className="sky-clouds">
-            {CLOUDS.map((c) => (
-              <Link
-                key={c.src}
-                href="/observatory"
-                className={`cloud-link ${c.cls}`}
-                aria-label="관측소 — 아직 글이 되지 않은 기록"
-              >
-                <Image
-                  src={c.src}
-                  width={c.w}
-                  height={c.h}
-                  alt=""
-                  className="px-art"
-                  unoptimized
-                  priority
-                />
-              </Link>
-            ))}
-            <Link
-              href="/observatory"
-              className="sky-teaser"
-              aria-label={`관측소 — 아직 글이 되지 않은 기록 ${TEASER_STAR_COUNT}개`}
-            >
-              {/* 하늘 너머로 비치는 별 — 우주는 낮/밤과 무관하다.
-                  수는 빌드 타임 상수 하나. 스냅샷을 홈에서 fetch하면 LCP 비용이 되돌아온다. */}
-              <svg width="68" height="26" viewBox="-34 -13 68 26" aria-hidden="true">
-                {[
-                  { x: -23, m: 4 as const, u: 1.3 },
-                  { x: -2, m: 5 as const, u: 1.2 },
-                  { x: 20, m: 3 as const, u: 1.4 },
-                ].map((s) => (
-                  <g key={s.x} transform={`translate(${s.x},0)`} fill="var(--t-on-sky)">
-                    {starCells(s.m).map(([cx, cy], i) => (
-                      <rect
-                        key={i}
-                        x={cx * s.u}
-                        y={cy * s.u}
-                        width={s.u}
-                        height={s.u}
-                        shapeRendering="crispEdges"
-                      />
-                    ))}
-                  </g>
-                ))}
-              </svg>
-              <span className="count">관측소 — 아직 글이 되지 않은 기록 {TEASER_STAR_COUNT}</span>
-            </Link>
-          </div>
 
           <p className="hero-eyebrow">EXPEDITION LOG</p>
           <h1 className="hero-title">
@@ -89,6 +46,8 @@ export default function Hero() {
 
       {/* ── 육지: 모닥불 CTA + 지름길(텐트·랜턴) ── */}
       <div className="hero-meadow">
+        {/* 하늘과 육지의 경계 — 땅에서 쏘아 올려 우주로 간다 */}
+        <RocketLaunch />
         <div className="wrap">
           <div className="meadow-top">
             {/* 모닥불과 문구는 한 클릭 영역(§4-3) */}

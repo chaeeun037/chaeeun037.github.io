@@ -44,6 +44,12 @@
       "to": "40×64"
     },
     {
+      "source": "rocket.png",
+      "out": "land-rocket-13x112.png",
+      "from": "104×882",
+      "to": "13×112"
+    },
+    {
       "source": "tent.png",
       "out": "land-tent-64x48.png",
       "from": "564×422",

@@ -34,6 +34,8 @@ const ASSETS = {
   'lantern-cross.png':          { zone: 'land', name: () => 'lantern',         targetHeight: 64 },
   'lantern-glow.png':           { zone: 'land', name: () => 'lantern-glow',    targetHeight: 64 },
   'lantern-cross-sparkles.png': { zone: 'land', name: () => 'lantern-sparkle', targetHeight: 64 },
+  // 관측소 진입 로켓 — 하늘/육지 경계에 선다. 배경이 마젠타라 키잉이 잘 먹는다
+  'rocket.png':                 { zone: 'land', name: () => 'rocket',         targetHeight: 112 },
 }
 
 const palette = JSON.parse(await readFile(join(HERE, 'palette.json'), 'utf8'))
