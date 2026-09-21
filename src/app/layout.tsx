@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Geist, Geist_Mono } from "next/font/google";
+import DiverTrack from "@/components/DiverTrack";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 import "./globals.css";
 
@@ -82,6 +83,8 @@ export default function RootLayout({
             </nav>
           </div>
         </header>
+        {/* 다이버 트랙은 전 페이지 고정 — 글 상세에서는 읽기 진행 표시기를 겸한다(핸드오프 §4) */}
+        <DiverTrack />
         {children}
         {/* 푸터 (핸드오프 §4-7). About 링크를 여기 둔 건 헤더에서 뺐기 때문이다 —
             대체 경로인 히어로 지름길(텐트→About)이 #28 이라 아직 없어서, 그때까지 유일한 진입점이다. */}
