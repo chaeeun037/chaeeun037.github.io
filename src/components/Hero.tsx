@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { TEASER_STAR_COUNT, starCells } from "@/lib/observatory";
 
 /**
  * 히어로 씬 (Zone A, #28) — 수직 세계관: 하늘 → 육지 → 물.
@@ -26,9 +27,9 @@ export default function Hero() {
             {CLOUDS.map((c) => (
               <Link
                 key={c.src}
-                href="/workbench"
+                href="/observatory"
                 className={`cloud-link ${c.cls}`}
-                aria-label="관측소 — 발행 전 글감"
+                aria-label="관측소 — 아직 글이 되지 않은 기록"
               >
                 <Image
                   src={c.src}
@@ -41,7 +42,35 @@ export default function Hero() {
                 />
               </Link>
             ))}
-            <span className="sky-lbl">관측소 — 발행 전 글감</span>
+            <Link
+              href="/observatory"
+              className="sky-teaser"
+              aria-label={`관측소 — 아직 글이 되지 않은 기록 ${TEASER_STAR_COUNT}개`}
+            >
+              {/* 하늘 너머로 비치는 별 — 우주는 낮/밤과 무관하다.
+                  수는 빌드 타임 상수 하나. 스냅샷을 홈에서 fetch하면 LCP 비용이 되돌아온다. */}
+              <svg width="68" height="26" viewBox="-34 -13 68 26" aria-hidden="true">
+                {[
+                  { x: -23, m: 4 as const, u: 1.3 },
+                  { x: -2, m: 5 as const, u: 1.2 },
+                  { x: 20, m: 3 as const, u: 1.4 },
+                ].map((s) => (
+                  <g key={s.x} transform={`translate(${s.x},0)`} fill="var(--t-on-sky)">
+                    {starCells(s.m).map(([cx, cy], i) => (
+                      <rect
+                        key={i}
+                        x={cx * s.u}
+                        y={cy * s.u}
+                        width={s.u}
+                        height={s.u}
+                        shapeRendering="crispEdges"
+                      />
+                    ))}
+                  </g>
+                ))}
+              </svg>
+              <span className="count">관측소 — 아직 글이 되지 않은 기록 {TEASER_STAR_COUNT}</span>
+            </Link>
           </div>
 
           <p className="hero-eyebrow">EXPEDITION LOG</p>
