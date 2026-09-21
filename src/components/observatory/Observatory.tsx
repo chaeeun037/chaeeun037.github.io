@@ -62,7 +62,7 @@ export default function Observatory() {
       <div className="obs-stage">
         {/* 스켈레톤 — 배경(성운·먼지)은 정적이라 즉시 깔리고 별자리만 비어 있다 */}
         <Sky snapshot={null} />
-        <p className="obs-status">하늘을 불러오는 중…</p>
+        <p className="obs-status">우주를 불러오는 중…</p>
       </div>
     );
   }
@@ -88,7 +88,7 @@ export default function Observatory() {
         <Legend />
       </div>
 
-      {/* 광도·개수는 아래쪽에 작게 — 하늘이 주인공이다 */}
+      {/* 광도·개수는 아래쪽에 작게 — 우주가 주인공이다 */}
       <div className="obs-meta">
         <span>별 {snapshot.stars.length}</span>
         <span>별자리 {snapshot.constellations.length}</span>

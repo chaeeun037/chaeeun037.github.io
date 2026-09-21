@@ -84,7 +84,7 @@ export const STAR_TEMPS = ["#cfe4ff", "#edf2f7", "#ffeccc", "#ffc98a", "#ffb347"
 /** written 전용 — 이것만 색이 데이터다 */
 export const WATER = "#7fd4e8";
 
-/** 결정론적 난수 — 같은 스냅샷이면 언제 봐도 같은 하늘 */
+/** 결정론적 난수 — 같은 스냅샷이면 언제 봐도 같은 우주 */
 export function seeded(seed: number): () => number {
   let s = seed >>> 0;
   return () => {
@@ -133,7 +133,7 @@ export function mockSnapshot(): ObservatorySnapshot {
   }
 
   const constellations: Constellation[] = [];
-  let cursor = 10; // written 은 하늘을 떠났으므로 별자리 구성에서 제외
+  let cursor = 10; // written 은 우주를 떠났으므로 별자리 구성에서 제외
   for (let c = 0; c < 20 && cursor < stars.length; c++) {
     const size = 2 + Math.floor(r() * 3); // 최소 2 — 혼자면 선이 없어 별자리가 아니다
     const members = stars.slice(cursor, cursor + size).map((s) => s.id);

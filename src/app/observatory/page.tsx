@@ -4,7 +4,7 @@ import Observatory from "@/components/observatory/Observatory";
 
 export const metadata: Metadata = {
   title: "관측소",
-  description: "아직 글이 되지 않은 기록들을 밤하늘로 봅니다. 구조와 깊이만 담은 시각화입니다.",
+  description: "아직 글이 되지 않은 기록들을 우주로 봅니다. 구조와 깊이만 담은 시각화입니다.",
 };
 
 /**

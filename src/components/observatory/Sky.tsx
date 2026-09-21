@@ -17,10 +17,10 @@ type Placed = Star & { x: number; y: number; z: number; color: string; order: nu
 const UNIT: Record<number, number> = { 1: 1.6, 2: 1.5, 3: 1.7, 4: 1.8, 5: 1.9 };
 
 /**
- * 밤하늘 — 배경(성운·먼지)은 캔버스, 별과 별자리 선은 픽셀 SVG.
- * 배치는 `star.id` 시드 기반이라 같은 스냅샷이면 언제 봐도 같은 하늘이다.
+ * 우주 — 배경(성운·먼지)은 캔버스, 별과 별자리 선은 픽셀 SVG.
+ * 배치는 `star.id` 시드 기반이라 같은 스냅샷이면 언제 봐도 같은 우주다.
  */
-/** snapshot 이 null 이면 배경만 그린다 — 불러오는 동안의 스켈레톤 하늘 */
+/** snapshot 이 null 이면 배경만 그린다 — 불러오는 동안의 스켈레톤 우주 */
 export default function Sky({ snapshot }: { snapshot: ObservatorySnapshot | null }) {
   const wrapRef = useRef<HTMLDivElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -81,7 +81,7 @@ export default function Sky({ snapshot }: { snapshot: ObservatorySnapshot | null
         p.y = Math.max(26, Math.min(h - 130, cy + Math.sin(ang) * rad));
       }
     }
-    // 등장 순서 — 밝은 별부터. 실제로 밤하늘에 눈이 적응하는 순서와 같아 자연스럽다.
+    // 등장 순서 — 밝은 별부터. 어두운 곳에서 눈이 적응하는 순서와 같아 자연스럽다.
     const order = [...placed].sort((a, b) => b.magnitude - a.magnitude);
     order.forEach((p, i) => {
       p.order = i;
@@ -147,7 +147,7 @@ export default function Sky({ snapshot }: { snapshot: ObservatorySnapshot | null
     const out: { c: Constellation; pts: Placed[] }[] = [];
     if (!snapshot) return out;
     for (const c of snapshot.constellations) {
-      // written 은 하늘을 떠났으므로 선에서 제외한다.
+      // written 은 우주를 떠났으므로 선에서 제외한다.
       // 포함하면 수평선까지 선이 끌려 내려가 화면을 가로지른다.
       const pts = c.members
         .map((id) => byId.get(id))

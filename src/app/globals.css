@@ -832,7 +832,7 @@ body { overflow-x: hidden; }
   .sky-teaser { position: static; margin-bottom: 10px; opacity: 0.85; }
 }
 
-/* 범례 (?) — 하늘 위에 상시 띄우면 시야를 가리고, 페이지를 나누면 하늘을 떠나야 한다 */
+/* 범례 (?) — 우주 위에 상시 띄우면 시야를 가리고, 페이지를 나누면 우주를 떠나야 한다 */
 .obs-stage { position: relative; }
 .obs-help {
   position: absolute;
@@ -918,7 +918,7 @@ body { overflow-x: hidden; }
 
 /* ── 관측소 등장 애니메이션 ──
    배경(성운·먼지)은 정적이라 즉시 깔리고, 별만 하나씩 켜진다.
-   밝은 별부터 뜨는 이유는 실제로 밤하늘에 눈이 적응하는 순서라서다. */
+   밝은 별부터 뜨는 이유는 어두운 곳에서 눈이 적응하는 순서라서다. */
 @keyframes star-in {
   from { opacity: 0; transform: scale(0.3); }
   60%  { opacity: 1; }
@@ -948,7 +948,7 @@ body { overflow-x: hidden; }
   }
 }
 
-/* 불러오는 동안·실패 시 상태 문구 — 하늘 아래 작게 */
+/* 불러오는 동안·실패 시 상태 문구 — 우주 아래 작게 */
 .obs-status {
   margin-top: 10px;
   font-size: 12px;
