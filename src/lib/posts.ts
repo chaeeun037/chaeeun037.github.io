@@ -35,6 +35,13 @@ export interface PostMeta {
   status: PostStatus;
   /** 미지정이면 뱃지를 붙이지 않는다 — 선언 안 한 글에 등급을 지어내지 않기 위해서다 */
   depth?: PostDepth;
+  /** 본문을 고친 날. sitemap의 lastModified가 이걸 쓴다 — 발행일이 아니라 수정일이 맞는 자리다 */
+  updated?: string;
+  /**
+   * 경험 시점(`YYYY-MM`). **정렬·RSS·OG에는 쓰지 않는다** — 그 자리는 발행일 몫이다.
+   * 오래전 경험을 최근에 정리했을 때 "지금 처음 겪은 일"로 읽히지 않게 하는 표시 전용 필드.
+   */
+  experiencedAt?: string;
 }
 
 export interface Post extends PostMeta {
@@ -57,13 +64,30 @@ function requireString(data: Record<string, unknown>, field: string, slug: strin
   return value.trim();
 }
 
-function normalizeDate(value: unknown, slug: string): string {
+function normalizeDate(value: unknown, slug: string, field = "date"): string {
   // YAML은 따옴표 없는 날짜를 Date로 파싱한다
   const date = value instanceof Date ? value : typeof value === "string" ? new Date(value) : null;
   if (!date || Number.isNaN(date.getTime())) {
-    throw new FrontmatterError(slug, `frontmatter "date"는 YYYY-MM-DD 형식이어야 합니다`);
+    throw new FrontmatterError(slug, `frontmatter "${field}"는 YYYY-MM-DD 형식이어야 합니다`);
   }
   return date.toISOString().slice(0, 10);
+}
+
+/**
+ * 경험 시점 — `YYYY-MM`(월) 또는 `YYYY-MM-DD`(일)를 받는다.
+ * 월까지만 적어도 되게 한 이유: 몇 년 전 경험의 날짜를 정확히 기억할 수 없고,
+ * 굳이 지어내면 그게 더 부정확한 기록이 된다.
+ * YAML이 `2024-03`을 문자열로, `2024-03-05`를 Date로 파싱하므로 둘 다 받는다.
+ */
+function normalizeExperiencedAt(value: unknown, slug: string): string {
+  if (value instanceof Date) return value.toISOString().slice(0, 7);
+  if (typeof value !== "string" || !/^\d{4}-\d{2}(-\d{2})?$/.test(value.trim())) {
+    throw new FrontmatterError(
+      slug,
+      `frontmatter "experiencedAt"는 YYYY-MM 또는 YYYY-MM-DD 형식이어야 합니다 (현재: ${String(value)})`,
+    );
+  }
+  return value.trim().slice(0, 7); // 표시는 월 단위로 통일한다
 }
 
 function parsePost(fileName: string): Post {
@@ -93,6 +117,9 @@ function parsePost(fileName: string): Post {
     featured: data.featured === true,
     status,
     depth: data.depth as PostDepth | undefined,
+    updated: data.updated === undefined ? undefined : normalizeDate(data.updated, slug, "updated"),
+    experiencedAt:
+      data.experiencedAt === undefined ? undefined : normalizeExperiencedAt(data.experiencedAt, slug),
     content,
   };
 }
@@ -105,12 +132,23 @@ function readAll(): Post[] {
     .map(parsePost);
 }
 
-/** 발행 글만, 최신순 */
+/** 발행 글만, **발행일 최신순**(기본 정렬) */
 export function getPublishedPosts(): PostMeta[] {
   return readAll()
     .filter((p) => p.status === "published")
     .sort((a, b) => b.date.localeCompare(a.date))
     .map(({ content: _content, ...meta }) => meta);
+}
+
+/**
+ * 경험 시점 최신순. 기본 목록은 발행일 순이고 이건 **선택적 보기**다 —
+ * "언제 겪은 일인지" 축으로 훑고 싶을 때 쓴다. 경험 시점이 없는 글은 발행일로 대신한다.
+ * (지금은 UI가 이 정렬을 노출하지 않는다. 데이터와 함수만 먼저 둔다.)
+ */
+export function getPublishedPostsByExperience(): PostMeta[] {
+  return getPublishedPosts().sort((a, b) =>
+    (b.experiencedAt ?? b.date).localeCompare(a.experiencedAt ?? a.date),
+  );
 }
 
 /** 발행 글 단건 (draft는 상세 페이지도 생성하지 않는다) */
