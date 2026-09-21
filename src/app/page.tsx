@@ -63,7 +63,7 @@ export default function Home() {
             />
             <div>
               <p className="font-semibold text-[var(--t-secondary)]">
-                아직 캠프가 비어 있습니다
+                아직 탐험 일지가 없습니다
               </p>
               <p className="mt-1 text-sm text-[var(--t-muted)]">
                 첫 기록을 준비하는 중입니다.
