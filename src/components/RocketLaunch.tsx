@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useRef, useState } from "react";
 import { TEASER_STAR_COUNT } from "@/lib/observatory";
@@ -11,7 +12,8 @@ import { TEASER_STAR_COUNT } from "@/lib/observatory";
  * 왜 별 티저를 버렸나: 낮 하늘에 어두운 별을 찍으니 빛나는 것이 아니라 티끌로 보였고,
  * 무엇보다 **무엇을 누르라는 건지 읽히지 않았다.** 로켓은 행동이 분명하다.
  *
- * 로켓 에셋은 미수령이라 CSS 로 임시 형태를 그린다 — 수령하면 이 블록만 <Image> 로 바꾼다.
+ * 로켓 에셋은 파이프라인 산출물이다. **다른 로켓으로 바꾸려면 `assets-raw/rocket.png` 를 갈아끼우고
+ * `pnpm pixel` 만 돌리면 된다** — 이 파일은 손대지 않는다.
  */
 export default function RocketLaunch() {
   const router = useRouter();
@@ -37,6 +39,14 @@ export default function RocketLaunch() {
       aria-label={`관측소로 이동 — 아직 글이 되지 않은 기록 ${TEASER_STAR_COUNT}개`}
     >
       <span className="rocket" aria-hidden="true">
+        <Image
+          src="/pixel/land-rocket-25x48.png"
+          width={25}
+          height={48}
+          alt=""
+          className="px-art"
+          unoptimized
+        />
         <span className="flame" />
       </span>
       <span className="launch-text">
