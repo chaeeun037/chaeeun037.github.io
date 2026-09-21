@@ -875,7 +875,7 @@ body { overflow-x: hidden; }
 .rocket {
   position: relative;
   display: block;
-  transition: transform 0.18s;
+  transition: transform 0.28s cubic-bezier(0.2, 0.7, 0.3, 1);
 }
 
 /* 분사 불꽃 — 호버·발사에서만 보인다. 픽셀 에셋에 맞춰 몸체 아래에 붙는다 */
@@ -883,31 +883,35 @@ body { overflow-x: hidden; }
   position: absolute;
   /* 좌우를 같은 값으로 물려 13px 동체 한가운데에 정확히 앉힌다(반픽셀 margin 회피) */
   left: 2px; right: 2px;
-  bottom: -20px;
-  height: 22px;
-  background: #ffd166;
+  bottom: -12px;
+  height: 12px;
+  background: #fff3c4;
   opacity: 0;
-  /* 노즐에서 아래로 뻗어 나간다 — 기본 원점(가운데)이면 위아래로 같이 자라 동체를 먹는다 */
+  /* 노즐에서 아래로만 뻗는다 — 기본 원점(가운데)이면 위아래로 같이 자라 동체를 먹는다 */
   transform-origin: 50% 0;
   transform: scaleY(0.25);
   transition: opacity 0.15s, transform 0.15s;
 }
-/* 픽셀 아트엔 곡선이 없다 — border-radius 대신 계단으로 폭을 좁혀 화염을 만든다 */
+/* 픽셀 아트엔 곡선이 없다 — 폭을 9→7→5→3으로 한 단씩 좁혀 화염을 만든다.
+   가운데가 가장 넓으면 불꽃이 아니라 막대로 보인다 */
 .flame::before {
   content: "";
   position: absolute;
-  left: 1px; right: 1px; top: -4px;
-  height: 6px;
-  background: #fff3c4;
+  left: 1px; right: 1px; top: 100%;
+  height: 14px;
+  background: #ffc94a;
 }
 .flame::after {
   content: "";
   position: absolute;
-  left: 3px; right: 3px; top: 100%;
-  height: 14px;
-  background: #ff7a3c;
+  left: 2px; right: 2px; top: calc(100% + 14px);
+  height: 10px;
+  background: #ff8a3c;
+  /* 끝단 — 요소를 하나 더 두는 대신 spread 로 2px 좁힌 그림자를 쓴다 */
+  box-shadow: 0 10px 0 -1px #ff6a2b;
 }
-.launchpad:hover .rocket { transform: translateY(-8px); }
+/* 화염이 뻗는 만큼 로켓을 띄운다 — 안 띄우면 불꽃이 풀밭 위에 얹혀 땅에서 불이 난 모양이 된다 */
+.launchpad:hover .rocket { transform: translateY(-40px); }
 .launchpad:hover .flame { opacity: 0.9; transform: scaleY(1); }
 .launchpad:focus-visible { outline: 2px solid var(--c-campfire-shadow); outline-offset: 6px; }
 
@@ -941,9 +945,9 @@ body { overflow-x: hidden; }
 
 /* 발사 — 위로 날아간 뒤 페이지가 바뀐다 */
 @keyframes liftoff {
-  0%   { transform: translateY(0) scale(1); opacity: 1; }
-  25%  { transform: translateY(6px) scale(0.96); }
-  100% { transform: translateY(-260px) scale(0.72); opacity: 0; }
+  0%   { transform: translateY(-40px) scale(1); opacity: 1; }
+  14%  { transform: translateY(-32px) scale(0.97); }
+  100% { transform: translateY(-300px) scale(0.72); opacity: 0; }
 }
 .launchpad.is-launching .rocket {
   animation: liftoff 620ms cubic-bezier(0.5, 0, 0.75, 0) forwards;
