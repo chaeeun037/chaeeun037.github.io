@@ -74,11 +74,11 @@ export default function Legend() {
             </button>
             <h2>별자리 읽는 법</h2>
             <p className="lead">
-              작업 하나가 별 하나입니다. 밝을수록 글감으로서 점수가 높고, 인과로 이어진 것들은
-              선으로 묶여 별자리가 됩니다.
+              작업 하나가 별 하나입니다. <strong>밝을수록 깊이 파고든 일</strong>이고, 인과로
+              이어진 것들은 선으로 묶여 별자리가 됩니다. 발행된 글에 붙는 깊이 등급과 같은 축입니다.
             </p>
 
-            <h3>밝기 — 모양과 크기로</h3>
+            <h3>파고든 깊이 — 모양과 크기로</h3>
             <div className="mags">
               {([1, 2, 3, 4, 5] as Magnitude[]).map((m) => (
                 <div key={m}>
@@ -88,7 +88,8 @@ export default function Legend() {
               ))}
             </div>
             <p className="note">
-              가장 밝은 <strong>5등급은 상위 5%</strong>만 받습니다. 흔하면 등급이 아니니까요.
+              가장 깊은 <strong>5등급은 상위 5%</strong>만 받습니다. 흔하면 등급이 아니니까요.
+              낮은 등급은 못한 일이 아니라 <strong>단순했던 일</strong>입니다.
             </p>
 
             <h3>상태 — 색과 선명도로</h3>
@@ -97,7 +98,7 @@ export default function Legend() {
                 <Mini mag={3} color={WATER} tail />
                 <div>
                   <strong>물빛 + 꼬리</strong>
-                  <span>이미 글이 된 것. 유성이 되어 물로 내려갑니다</span>
+                  <span>이미 글이 된 기록. 유성이 되어 물로 내려갑니다</span>
                 </div>
               </li>
               <li>

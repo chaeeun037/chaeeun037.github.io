@@ -6,7 +6,7 @@ import { mockSnapshot } from "@/lib/observatory";
 
 export const metadata: Metadata = {
   title: "관측소",
-  description: "발행 전 글감을 밤하늘로 본다. 구조와 등급만 담은 시각화입니다.",
+  description: "아직 글이 되지 않은 기록들을 밤하늘로 봅니다. 구조와 깊이만 담은 시각화입니다.",
 };
 
 /**
@@ -27,8 +27,9 @@ export default function ObservatoryPage() {
           아직 글이 되지 않은 것들
         </h1>
         <p className="mt-3 max-w-2xl text-[var(--t-secondary)]">
-          작업 하나가 별 하나입니다. 인과로 이어진 것들은 별자리가 되고, 밝기는 글감으로서의
-          점수입니다. 이미 글이 된 것은 물빛으로 바다에 내려가 있습니다.
+          작업 하나가 별 하나입니다. 인과로 이어진 것들은 별자리가 되고,{" "}
+          <strong>밝기는 그 일에 얼마나 깊이 파고들었는지</strong>입니다. 이미 글이 된 것은
+          유성이 되어 물로 내려갑니다.
         </p>
       </header>
 
@@ -41,9 +42,9 @@ export default function ObservatoryPage() {
       <div className="obs-meta">
         <span>별 {snapshot.stars.length}</span>
         <span>별자리 {snapshot.constellations.length}</span>
-        <span>바다로 내려감 {written}</span>
+        <span>글이 됨 {written}</span>
         <span className="obs-legend">
-          모양·크기 = 밝기 · <em style={{ color: "var(--c-shallow)" }}>물빛</em> = 발행됨 · 흐림 = 진행 중
+          모양·크기 = 파고든 깊이 · <em style={{ color: "var(--c-shallow)" }}>유성</em> = 글이 됨 · 흐림 = 진행 중
         </span>
       </div>
 

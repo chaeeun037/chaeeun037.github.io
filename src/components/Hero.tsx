@@ -29,7 +29,7 @@ export default function Hero() {
                 key={c.src}
                 href="/observatory"
                 className={`cloud-link ${c.cls}`}
-                aria-label="관측소 — 발행 전 글감"
+                aria-label="관측소 — 아직 글이 되지 않은 기록"
               >
                 <Image
                   src={c.src}
@@ -45,7 +45,7 @@ export default function Hero() {
             <Link
               href="/observatory"
               className="sky-teaser"
-              aria-label={`관측소 — 발행 전 글감 ${TEASER_STAR_COUNT}개`}
+              aria-label={`관측소 — 아직 글이 되지 않은 기록 ${TEASER_STAR_COUNT}개`}
             >
               {/* 하늘 너머로 비치는 별 — 우주는 낮/밤과 무관하다.
                   수는 빌드 타임 상수 하나. 스냅샷을 홈에서 fetch하면 LCP 비용이 되돌아온다. */}
@@ -69,7 +69,7 @@ export default function Hero() {
                   </g>
                 ))}
               </svg>
-              <span className="count">관측소 — 발행 전 글감 {TEASER_STAR_COUNT}</span>
+              <span className="count">관측소 — 아직 글이 되지 않은 기록 {TEASER_STAR_COUNT}</span>
             </Link>
           </div>
 
